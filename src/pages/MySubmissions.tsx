@@ -58,7 +58,9 @@ const MySubmissions = () => {
                       <p className="text-sm text-gray-600">
                         {typeof submission.location === 'string' 
                           ? submission.location 
-                          : `${submission.location.city}, ${submission.location.state}`}
+                          : submission.location && typeof submission.location === 'object' && 'city' in submission.location && 'state' in submission.location
+                            ? `${submission.location.city}, ${submission.location.state}`
+                            : 'Location unavailable'}
                       </p>
                     </div>
                     

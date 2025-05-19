@@ -21,7 +21,7 @@ const NavLinks: React.FC<NavLinksProps> = ({
   const { isAdmin, isAuthenticated } = useAuth();
   
   return (
-    <div className={className}>
+    <div className={`${className} items-center`}>
       <Link 
         to="/" 
         className={linkClassName}
