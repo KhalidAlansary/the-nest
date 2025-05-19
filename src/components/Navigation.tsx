@@ -36,6 +36,9 @@ const Navigation = () => {
             <Link to="/" className="text-nest-dark hover:text-nest-primary font-medium transition-colors">
               Home
             </Link>
+            <Link to="/properties" className="text-nest-dark hover:text-nest-primary font-medium transition-colors">
+              Properties
+            </Link>
             <Link to="/about" className="text-nest-dark hover:text-nest-primary font-medium transition-colors">
               About Us
             </Link>
@@ -98,6 +101,13 @@ const Navigation = () => {
                 onClick={toggleMenu}
               >
                 Home
+              </Link>
+              <Link 
+                to="/properties" 
+                className="py-2 text-nest-dark hover:text-nest-primary font-medium transition-colors"
+                onClick={toggleMenu}
+              >
+                Properties
               </Link>
               <Link 
                 to="/about" 

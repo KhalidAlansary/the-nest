@@ -1,0 +1,104 @@
+
+import React from 'react';
+import { Link } from 'react-router-dom';
+import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Button } from "@/components/ui/button";
+import { Bed, Bath, Users, DollarSign, Star } from "lucide-react";
+import { properties } from '@/data/properties';
+
+const Properties = () => {
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Navigation />
+      
+      <main className="flex-grow section-padding">
+        <div className="container mx-auto">
+          <div className="text-center mb-10">
+            <h1 className="text-3xl md:text-4xl font-bold text-nest-dark mb-4">Find Your Perfect Nest</h1>
+            <p className="text-gray-600 max-w-3xl mx-auto">
+              Browse our curated selection of premium properties designed for short-term and extended stays.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {properties.map((property) => (
+              <Link 
+                to={`/properties/${property.id}`} 
+                key={property.id}
+                className="property-card focus:outline-none focus:ring-2 focus:ring-nest-primary focus:ring-offset-2 rounded-lg"
+              >
+                <Card className="h-full flex flex-col">
+                  <div className="overflow-hidden rounded-t-lg">
+                    <AspectRatio ratio={16 / 9}>
+                      <img
+                        src={property.images[0].url}
+                        alt={property.images[0].alt}
+                        className="object-cover w-full h-full transition-all hover:scale-105 duration-300"
+                      />
+                    </AspectRatio>
+                  </div>
+                  
+                  <CardHeader className="pb-2">
+                    <div className="flex justify-between items-start">
+                      <CardTitle className="text-xl font-bold text-nest-dark">
+                        {property.name}
+                      </CardTitle>
+                      <div className="flex items-center text-amber-500">
+                        <Star size={16} fill="currentColor" />
+                        <span className="ml-1 text-sm font-medium">{property.rating}</span>
+                      </div>
+                    </div>
+                    <CardDescription className="text-gray-500">
+                      {property.location}
+                    </CardDescription>
+                  </CardHeader>
+                  
+                  <CardContent className="pb-2 flex-grow">
+                    <p className="text-gray-700 line-clamp-2 mb-4">
+                      {property.description}
+                    </p>
+                    
+                    <div className="grid grid-cols-3 gap-2 text-sm text-gray-600 mb-4">
+                      <div className="flex items-center">
+                        <Bed size={16} className="mr-1" />
+                        <span>{property.bedrooms} {property.bedrooms === 1 ? 'Bed' : 'Beds'}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Bath size={16} className="mr-1" />
+                        <span>{property.bathrooms} {property.bathrooms === 1 ? 'Bath' : 'Baths'}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Users size={16} className="mr-1" />
+                        <span>Max {property.maxGuests}</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                  
+                  <CardFooter className="pt-2 border-t">
+                    <div className="w-full flex justify-between items-center">
+                      <div className="flex items-center text-nest-primary font-bold">
+                        <DollarSign size={18} />
+                        <span className="text-xl">{property.pricePerDay}</span>
+                        <span className="text-sm text-gray-500 font-normal ml-1">/ night</span>
+                      </div>
+                      <Button size="sm" className="bg-nest-primary hover:bg-nest-primary/90">
+                        View Details
+                      </Button>
+                    </div>
+                  </CardFooter>
+                </Card>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </main>
+      
+      <Footer />
+    </div>
+  );
+};
+
+export default Properties;
