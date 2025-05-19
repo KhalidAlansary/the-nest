@@ -1,8 +1,9 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import PropertiesDropdown from './PropertiesDropdown';
-import MyPropertiesDropdown from './MyPropertiesDropdown';
+import PropertiesDropdown from '@/components/navigation/PropertiesDropdown';
+import MyPropertiesDropdown from '@/components/navigation/MyPropertiesDropdown';
 
 interface NavLinksProps {
   toggleMenu?: () => void;
