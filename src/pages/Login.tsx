@@ -111,7 +111,7 @@ const Login = () => {
               <div className="text-center mt-4">
                 <p className="text-sm text-gray-600">
                   Don't have an account?{' '}
-                  <a href="#" className="text-nest-primary hover:text-nest-primary/80 font-medium">
+                  <a href="/signup" className="text-nest-primary hover:text-nest-primary/80 font-medium">
                     Sign up
                   </a>
                 </p>

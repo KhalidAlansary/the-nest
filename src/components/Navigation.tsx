@@ -58,12 +58,21 @@ const Navigation = () => {
                 </Button>
               </div>
             ) : (
-              <Button 
-                onClick={() => navigate('/login')} 
-                className="bg-nest-primary hover:bg-nest-primary/90"
-              >
-                <LogIn size={18} className="mr-2" /> Sign In
-              </Button>
+              <div className="flex items-center space-x-4">
+                <Button 
+                  onClick={() => navigate('/login')} 
+                  className="bg-nest-primary hover:bg-nest-primary/90"
+                >
+                  <LogIn size={18} className="mr-2" /> Sign In
+                </Button>
+                <Button 
+                  onClick={() => navigate('/signup')} 
+                  variant="outline"
+                  className="border-nest-primary text-nest-primary hover:bg-nest-primary/10"
+                >
+                  Sign Up
+                </Button>
+              </div>
             )}
           </div>
 
@@ -123,15 +132,27 @@ const Navigation = () => {
                   </Button>
                 </>
               ) : (
-                <Button 
-                  onClick={() => {
-                    navigate('/login');
-                    toggleMenu();
-                  }} 
-                  className="bg-nest-primary hover:bg-nest-primary/90 w-full"
-                >
-                  <LogIn size={18} className="mr-2" /> Sign In
-                </Button>
+                <>
+                  <Button 
+                    onClick={() => {
+                      navigate('/login');
+                      toggleMenu();
+                    }} 
+                    className="bg-nest-primary hover:bg-nest-primary/90 w-full mb-2"
+                  >
+                    <LogIn size={18} className="mr-2" /> Sign In
+                  </Button>
+                  <Button 
+                    onClick={() => {
+                      navigate('/signup');
+                      toggleMenu();
+                    }} 
+                    variant="outline"
+                    className="border-nest-primary text-nest-primary hover:bg-nest-primary/10 w-full"
+                  >
+                    Sign Up
+                  </Button>
+                </>
               )}
             </div>
           </div>
