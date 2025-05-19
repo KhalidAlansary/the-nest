@@ -1,12 +1,51 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React from 'react';
+import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
+import HeroSection from '@/components/home/HeroSection';
+import FeaturedProperties from '@/components/home/FeaturedProperties';
+import HowItWorks from '@/components/home/HowItWorks';
+import Testimonials from '@/components/home/Testimonials';
+import { Button } from '@/components/ui/button';
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen flex flex-col">
+      <Navigation />
+      
+      <main className="flex-grow">
+        {/* Hero Section */}
+        <HeroSection />
+        
+        {/* Featured Properties */}
+        <FeaturedProperties />
+        
+        {/* How It Works */}
+        <HowItWorks />
+        
+        {/* Call to Action */}
+        <section className="section-padding bg-nest-accent text-white">
+          <div className="container mx-auto text-center">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Find Your Perfect Nest?</h2>
+            <p className="text-lg mb-8 max-w-2xl mx-auto">
+              Join thousands of happy renters who've found their ideal temporary home with us.
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <Button size="lg" className="bg-nest-primary hover:bg-nest-primary/90">
+                Browse Properties
+              </Button>
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-nest-accent">
+                Learn More
+              </Button>
+            </div>
+          </div>
+        </section>
+        
+        {/* Testimonials */}
+        <Testimonials />
+      </main>
+      
+      <Footer />
     </div>
   );
 };
