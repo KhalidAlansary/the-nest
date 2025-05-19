@@ -1,14 +1,14 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ChevronDown } from 'lucide-react';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 
 interface PropertiesDropdownProps {
   linkClassName: string;
@@ -25,118 +25,95 @@ const PropertiesDropdown: React.FC<PropertiesDropdownProps> = ({
   isAdmin,
   isMobile = false
 }) => {
-  // Use Collapsible component for mobile view
+  const [isOpen, setIsOpen] = useState(false);
+
+  const menuItems = [
+    { title: "Browse Properties", path: "/properties", description: "View our available properties" },
+    ...(isAuthenticated || isAdmin ? [{ title: "Submit Property", path: "/submit-property", description: "Submit a new property listing" }] : []),
+    ...(isAuthenticated ? [{ title: "My Rentals", path: "/my-rentals", description: "Manage your rental properties" }] : []),
+    ...(isAdmin ? [{ title: "Approve Properties", path: "/admin/properties", description: "Review and approve property submissions" }] : [])
+  ];
+
+  // For mobile, we need a different UI
   if (isMobile) {
     return (
-      <Collapsible className="w-full py-2">
-        <CollapsibleTrigger className={`${linkClassName} flex items-center justify-between w-full`}>
-          <span>Properties</span>
-          <ChevronDown className="h-4 w-4" />
-        </CollapsibleTrigger>
-        <CollapsibleContent className="pl-4 border-l-2 border-gray-200 mt-2 space-y-3 flex flex-col">
-          <Link 
-            to="/properties" 
-            className={`${linkClassName} block py-2`}
-            onClick={toggleMenu}
-          >
-            Browse Properties
-          </Link>
-          
-          {/* Show Submit Property for authenticated users or admins */}
-          {(isAuthenticated || isAdmin) && (
-            <Link 
-              to="/submit-property" 
-              className={`${linkClassName} block py-2`}
-              onClick={toggleMenu}
-            >
-              Submit Property
-            </Link>
-          )}
-          
-          {/* Show My Rentals for authenticated users */}
-          {isAuthenticated && (
-            <Link 
-              to="/my-rentals" 
-              className={`${linkClassName} block py-2`}
-              onClick={toggleMenu}
-            >
-              My Rentals
-            </Link>
-          )}
-          
-          {/* Admin specific menu item */}
-          {isAdmin && (
-            <Link 
-              to="/admin/properties" 
-              className={`${linkClassName} block py-2`}
-              onClick={toggleMenu}
-            >
-              Approve Properties
-            </Link>
-          )}
-        </CollapsibleContent>
-      </Collapsible>
+      <div className="relative">
+        <button 
+          onClick={() => setIsOpen(!isOpen)} 
+          className={`${linkClassName} flex items-center justify-between w-full`}
+        >
+          Properties
+          {isOpen ? <ChevronUp size={16} className="ml-1" /> : <ChevronDown size={16} className="ml-1" />}
+        </button>
+        
+        {isOpen && (
+          <div className="pl-4 mt-2 space-y-2">
+            {menuItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={linkClassName}
+                onClick={() => {
+                  setIsOpen(false);
+                  if (toggleMenu) toggleMenu();
+                }}
+              >
+                {item.title}
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
     );
   }
-  
-  // Desktop view uses the dropdown
+
+  // For desktop, use NavigationMenu like MyPropertiesDropdown
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger className={`${linkClassName} inline-flex items-center`}>
-        Properties <ChevronDown className="ml-1 h-4 w-4" />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="bg-white">
-        <DropdownMenuItem asChild>
-          <Link 
-            to="/properties" 
-            className="w-full cursor-pointer"
-            onClick={toggleMenu}
-          >
-            Browse Properties
-          </Link>
-        </DropdownMenuItem>
-        
-        {/* Show Submit Property for authenticated users or admins */}
-        {(isAuthenticated || isAdmin) && (
-          <DropdownMenuItem asChild>
-            <Link 
-              to="/submit-property" 
-              className="w-full cursor-pointer"
-              onClick={toggleMenu}
-            >
-              Submit Property
-            </Link>
-          </DropdownMenuItem>
-        )}
-        
-        {/* Show My Rentals for authenticated users */}
-        {isAuthenticated && (
-          <DropdownMenuItem asChild>
-            <Link 
-              to="/my-rentals" 
-              className="w-full cursor-pointer"
-              onClick={toggleMenu}
-            >
-              My Rentals
-            </Link>
-          </DropdownMenuItem>
-        )}
-        
-        {/* Admin specific menu item */}
-        {isAdmin && (
-          <DropdownMenuItem asChild>
-            <Link 
-              to="/admin/properties" 
-              className="w-full cursor-pointer"
-              onClick={toggleMenu}
-            >
-              Approve Properties
-            </Link>
-          </DropdownMenuItem>
-        )}
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <NavigationMenu className="p-0">
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger className={`${linkClassName} bg-transparent hover:bg-transparent focus:bg-transparent`}>
+            Properties
+          </NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-1 lg:w-[600px]">
+              {menuItems.map((item) => (
+                <li key={item.path}>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      to={item.path}
+                      className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                      onClick={() => {
+                        if (toggleMenu) toggleMenu();
+                      }}
+                    >
+                      <div className="text-sm font-medium leading-none">{item.title}</div>
+                      <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                        {item.description}
+                      </p>
+                    </Link>
+                  </NavigationMenuLink>
+                </li>
+              ))}
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
   );
+};
+
+interface NavigationMenuLinkProps {
+  asChild: boolean;
+  children: React.ReactNode;
+}
+
+// Create a NavigationMenuLink component to match the interface
+const NavigationMenuLink: React.FC<NavigationMenuLinkProps> = ({ asChild, children }) => {
+  if (asChild) {
+    return <>{children}</>;
+  }
+  return <div>{children}</div>;
 };
 
 export default PropertiesDropdown;
