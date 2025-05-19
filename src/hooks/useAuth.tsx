@@ -33,6 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = (userData: { username: string; isAdmin?: boolean }) => {
+    console.log('Logging in with data:', userData);
     setUser(userData);
     // In a real app, you would store the user in localStorage or a secure cookie
     localStorage.setItem('user', JSON.stringify(userData));

@@ -21,8 +21,8 @@ const Login = () => {
     e.preventDefault();
     
     if (username === 'admin' && password === 'admin123') {
-      login({ username });
-      toast.success('Successfully logged in!');
+      login({ username, isAdmin: true });
+      toast.success('Successfully logged in as admin!');
       navigate('/');
     } else {
       toast.error('Invalid credentials. Please try again.');
