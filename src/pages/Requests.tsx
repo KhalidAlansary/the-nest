@@ -6,8 +6,23 @@ import Footer from '@/components/Footer';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
+type RequestStatus = 'pending' | 'in_progress' | 'completed' | 'cancelled';
+type RequestType = 'maintenance' | 'cleaning';
+
+interface ServiceRequest {
+  id: number;
+  propertyId: string;
+  propertyTitle: string;
+  type: RequestType;
+  status: RequestStatus;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+  owner: string;
+}
+
 // Mock data for maintenance and cleaning requests
-const mockRequests = [
+const mockRequests: ServiceRequest[] = [
   {
     id: 1,
     propertyId: '1',
@@ -42,21 +57,6 @@ const mockRequests = [
     owner: 'jane_smith'
   },
 ];
-
-type RequestStatus = 'pending' | 'in_progress' | 'completed' | 'cancelled';
-type RequestType = 'maintenance' | 'cleaning';
-
-interface ServiceRequest {
-  id: number;
-  propertyId: string;
-  propertyTitle: string;
-  type: RequestType;
-  status: RequestStatus;
-  description: string;
-  createdAt: string;
-  updatedAt: string;
-  owner: string;
-}
 
 const Requests = () => {
   const { user } = useAuth();

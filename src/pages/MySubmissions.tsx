@@ -14,7 +14,7 @@ const MySubmissions = () => {
   // Filter submissions by current user and only show pending or rejected ones
   const mySubmissions = propertySubmissions.filter(
     (submission) => 
-      submission.owner === user?.username && 
+      submission.owner.name === user?.username && 
       (submission.status === 'pending' || submission.status === 'rejected')
   );
 
@@ -44,9 +44,9 @@ const MySubmissions = () => {
               <Card key={submission.id} className="shadow-md">
                 <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
                   <div>
-                    <CardTitle className="text-xl">{submission.title}</CardTitle>
+                    <CardTitle className="text-xl">{submission.name}</CardTitle>
                     <CardDescription className="text-sm">
-                      Submitted: {new Date(submission.createdAt).toLocaleDateString()}
+                      Submitted: {new Date(submission.submittedAt).toLocaleDateString()}
                     </CardDescription>
                   </div>
                   {getStatusBadge(submission.status)}
@@ -56,15 +56,17 @@ const MySubmissions = () => {
                     <div>
                       <p className="text-sm font-medium">Location:</p>
                       <p className="text-sm text-gray-600">
-                        {submission.location.city}, {submission.location.state}
+                        {typeof submission.location === 'string' 
+                          ? submission.location 
+                          : `${submission.location.city}, ${submission.location.state}`}
                       </p>
                     </div>
                     
-                    {submission.adminComments && (
+                    {submission.reviewNotes && (
                       <div>
                         <p className="text-sm font-medium text-gray-900">Admin Comments:</p>
                         <p className="text-sm text-gray-600 p-3 bg-gray-50 rounded-md border">
-                          {submission.adminComments}
+                          {submission.reviewNotes}
                         </p>
                       </div>
                     )}
