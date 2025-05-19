@@ -101,21 +101,21 @@ const SearchBar = ({ className = "" }: SearchBarProps) => {
                   max="4900"
                   value={minPrice}
                   onChange={handleMinPriceChange}
-                  className="w-24 text-sm p-1 h-8"
+                  className="w-24 text-sm p-1 h-8 text-gray-800"
                   placeholder="Min"
                 />
-                <span className="mx-2">-</span>
+                <span className="mx-2 text-gray-800">-</span>
                 <Input
                   type="number"
                   min="100"
                   max="5000"
                   value={maxPrice}
                   onChange={handleMaxPriceChange}
-                  className="w-24 text-sm p-1 h-8"
+                  className="w-24 text-sm p-1 h-8 text-gray-800"
                   placeholder="Max"
                 />
               </div>
-              <span className="text-xs text-gray-500">L.E.</span>
+              <span className="text-xs text-gray-800 font-medium">L.E.</span>
             </div>
           </div>
         </div>
@@ -134,8 +134,8 @@ const SearchBar = ({ className = "" }: SearchBarProps) => {
             </PopoverTrigger>
             <PopoverContent className="w-56 p-3" align="start">
               <div className="space-y-2">
-                <h4 className="font-medium leading-none">Property Type</h4>
-                <p className="text-sm text-muted-foreground">
+                <h4 className="font-medium leading-none text-gray-900">Property Type</h4>
+                <p className="text-sm text-gray-700">
                   Select property categories
                 </p>
                 <div className="space-y-2 pt-2">
@@ -148,7 +148,7 @@ const SearchBar = ({ className = "" }: SearchBarProps) => {
                       />
                       <label 
                         htmlFor={`category-${category.value}`}
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        className="text-sm font-medium leading-none text-gray-800 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                       >
                         {category.label}
                       </label>
