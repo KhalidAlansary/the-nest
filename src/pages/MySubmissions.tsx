@@ -1,8 +1,5 @@
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { propertySubmissions } from '@/data/propertySubmissions';
-import { PropertySubmission as PropertySubmissionType, ApprovalStatus } from '@/types/propertySubmission';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -17,35 +14,47 @@ const statusColors = {
 
 const MySubmissions = () => {
   const { user } = useAuth();
-  
-  // Filter submissions to only show those from the current user
-  const mySubmissions = propertySubmissions.filter(submission => 
-    submission.owner.id === user?.id
-  );
-  
-  // Group submissions by status
-  const pendingSubmissions = mySubmissions.filter(sub => sub.status === 'pending');
-  const approvedSubmissions = mySubmissions.filter(sub => sub.status === 'approved');
-  const rejectedSubmissions = mySubmissions.filter(sub => sub.status === 'rejected');
-  
-  const formatDate = (date: Date) => {
-    return new Date(date).toLocaleDateString('en-US', {
+  const [submissions, setSubmissions] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchSubmissions = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/properties/my`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      const data = await res.json();
+      setSubmissions(data);
+    } catch (err) {
+      console.error("Failed to load submissions", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (user) fetchSubmissions();
+  }, [user]);
+
+  const formatDate = (date: string) =>
+    new Date(date).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
     });
-  };
 
-  const PropertySubmission = ({ submission }: { submission: PropertySubmissionType }) => {
+  const PropertySubmission = ({ submission }) => {
     const statusColor = statusColors[submission.status];
-    
+
     return (
       <Card className="mb-4">
         <CardHeader>
           <div className="flex justify-between items-start">
             <div>
               <CardTitle>{submission.name}</CardTitle>
-              <CardDescription>Submitted on {formatDate(submission.submittedAt)}</CardDescription>
+              <CardDescription>Submitted on {formatDate(submission.createdAt)}</CardDescription>
             </div>
             <Badge className={statusColor}>{submission.status}</Badge>
           </div>
@@ -61,16 +70,14 @@ const MySubmissions = () => {
               <p>${submission.pricePerDay}/day</p>
             </div>
           </div>
-          
           <div className="mt-4">
             <p className="text-sm text-gray-500">Description</p>
             <p className="line-clamp-3">{submission.description}</p>
           </div>
-          
-          {submission.reviewNotes && submission.status === 'rejected' && (
+          {submission.reviewComment && submission.status === 'rejected' && (
             <div className="mt-4 p-3 bg-red-50 rounded-md">
               <p className="text-sm font-medium text-red-800">Rejection Reason:</p>
-              <p className="text-sm text-red-700">{submission.reviewNotes}</p>
+              <p className="text-sm text-red-700">{submission.reviewComment}</p>
             </div>
           )}
         </CardContent>
@@ -87,63 +94,48 @@ const MySubmissions = () => {
     );
   };
 
+  const grouped = {
+    all: submissions,
+    pending: submissions.filter(sub => sub.status === 'pending'),
+    approved: submissions.filter(sub => sub.status === 'approved'),
+    rejected: submissions.filter(sub => sub.status === 'rejected'),
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navigation />
-      
       <main className="flex-grow container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">My Property Submissions</h1>
-        
-        <Tabs defaultValue="all" className="w-full">
-          <TabsList className="mb-6">
-            <TabsTrigger value="all">All ({mySubmissions.length})</TabsTrigger>
-            <TabsTrigger value="pending">Pending ({pendingSubmissions.length})</TabsTrigger>
-            <TabsTrigger value="approved">Approved ({approvedSubmissions.length})</TabsTrigger>
-            <TabsTrigger value="rejected">Rejected ({rejectedSubmissions.length})</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="all">
-            {mySubmissions.length > 0 ? (
-              mySubmissions.map((submission) => (
-                <PropertySubmission key={submission.id} submission={submission} />
-              ))
-            ) : (
-              <p className="text-center py-10 text-gray-500">You haven't submitted any properties yet.</p>
-            )}
-          </TabsContent>
-          
-          <TabsContent value="pending">
-            {pendingSubmissions.length > 0 ? (
-              pendingSubmissions.map((submission) => (
-                <PropertySubmission key={submission.id} submission={submission} />
-              ))
-            ) : (
-              <p className="text-center py-10 text-gray-500">You don't have any pending submissions.</p>
-            )}
-          </TabsContent>
-          
-          <TabsContent value="approved">
-            {approvedSubmissions.length > 0 ? (
-              approvedSubmissions.map((submission) => (
-                <PropertySubmission key={submission.id} submission={submission} />
-              ))
-            ) : (
-              <p className="text-center py-10 text-gray-500">You don't have any approved submissions.</p>
-            )}
-          </TabsContent>
-          
-          <TabsContent value="rejected">
-            {rejectedSubmissions.length > 0 ? (
-              rejectedSubmissions.map((submission) => (
-                <PropertySubmission key={submission.id} submission={submission} />
-              ))
-            ) : (
-              <p className="text-center py-10 text-gray-500">You don't have any rejected submissions.</p>
-            )}
-          </TabsContent>
-        </Tabs>
+
+        {loading ? (
+          <p className="text-center">Loading...</p>
+        ) : (
+          <Tabs defaultValue="all" className="w-full">
+            <TabsList className="mb-6">
+              <TabsTrigger value="all">All ({grouped.all.length})</TabsTrigger>
+              <TabsTrigger value="pending">Pending ({grouped.pending.length})</TabsTrigger>
+              <TabsTrigger value="approved">Approved ({grouped.approved.length})</TabsTrigger>
+              <TabsTrigger value="rejected">Rejected ({grouped.rejected.length})</TabsTrigger>
+            </TabsList>
+
+            {['all', 'pending', 'approved', 'rejected'].map(status => (
+              <TabsContent key={status} value={status}>
+                {grouped[status].length > 0 ? (
+                  grouped[status].map(sub => (
+                    <PropertySubmission key={sub._id} submission={sub} />
+                  ))
+                ) : (
+                  <p className="text-center py-10 text-gray-500">
+                    {status === 'all'
+                      ? "You haven't submitted any properties yet."
+                      : `You don't have any ${status} submissions.`}
+                  </p>
+                )}
+              </TabsContent>
+            ))}
+          </Tabs>
+        )}
       </main>
-      
       <Footer />
     </div>
   );
