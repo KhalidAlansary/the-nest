@@ -16,8 +16,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, toggleMenu }) => {
       <div className="flex flex-col space-y-3">
         <NavLinks 
           toggleMenu={toggleMenu}
-          linkClassName="py-2 text-nest-dark hover:text-nest-primary font-medium transition-colors"
-          className="flex flex-col space-y-1"
+          linkClassName="py-2 text-nest-dark hover:text-nest-primary font-medium transition-colors block w-full"
+          className="flex flex-col space-y-3 w-full"
           isMobile={true}
         />
         <div className="mt-4 pt-4 border-t border-gray-200">

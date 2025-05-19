@@ -28,12 +28,12 @@ const PropertiesDropdown: React.FC<PropertiesDropdownProps> = ({
   // Use Collapsible component for mobile view
   if (isMobile) {
     return (
-      <Collapsible className="w-full">
-        <CollapsibleTrigger className={`${linkClassName} flex items-center justify-between w-full py-2`}>
+      <Collapsible className="w-full py-2">
+        <CollapsibleTrigger className={`${linkClassName} flex items-center justify-between w-full`}>
           <span>Properties</span>
           <ChevronDown className="h-4 w-4" />
         </CollapsibleTrigger>
-        <CollapsibleContent className="pl-4 border-l-2 border-gray-200 mt-1 space-y-2">
+        <CollapsibleContent className="pl-4 border-l-2 border-gray-200 mt-2 space-y-3 flex flex-col">
           <Link 
             to="/properties" 
             className={`${linkClassName} block py-2`}
