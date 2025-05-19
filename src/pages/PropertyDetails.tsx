@@ -8,11 +8,13 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Bed, Bath, Users, DollarSign, Calendar, ArrowLeft, Star, Tv, Wifi, Table } from "lucide-react";
 import { properties } from '@/data/properties';
 import { Property } from '@/types/property';
+import BookingCalendar from '@/components/booking/BookingCalendar';
 
 const PropertyDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = useState<'day' | 'week' | 'month'>('day');
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
   
   const property = properties.find(p => p.id === Number(id)) as Property;
   
@@ -243,7 +245,10 @@ const PropertyDetails = () => {
                   </div>
                 </div>
                 
-                <Button className="w-full bg-nest-primary hover:bg-nest-primary/90 mb-4">
+                <Button 
+                  className="w-full bg-nest-primary hover:bg-nest-primary/90 mb-4"
+                  onClick={() => setIsBookingOpen(true)}
+                >
                   <Calendar className="mr-2" size={18} />
                   Book Now
                 </Button>
@@ -256,6 +261,13 @@ const PropertyDetails = () => {
           </div>
         </div>
       </main>
+      
+      {/* Booking Calendar Dialog */}
+      <BookingCalendar 
+        property={property}
+        isOpen={isBookingOpen}
+        onClose={() => setIsBookingOpen(false)}
+      />
       
       <Footer />
     </div>

@@ -1,6 +1,11 @@
 
 import { Property } from "@/types/property";
 
+// Helper function to create dates for the sample booked dates
+const createDate = (year: number, month: number, day: number) => {
+  return new Date(year, month - 1, day);
+};
+
 export const properties: Property[] = [
   {
     id: 1,
@@ -42,7 +47,12 @@ export const properties: Property[] = [
       { id: 4, name: "Billiards Table", icon: "table" }
     ],
     rating: 4.8,
-    reviewCount: 24
+    reviewCount: 24,
+    bookedDates: [
+      // Sample booked dates
+      { start: createDate(2025, 5, 25), end: createDate(2025, 5, 30) },
+      { start: createDate(2025, 6, 10), end: createDate(2025, 6, 15) }
+    ]
   },
   {
     id: 2,
@@ -82,7 +92,11 @@ export const properties: Property[] = [
       { id: 2, name: "WiFi", icon: "wifi" }
     ],
     rating: 4.6,
-    reviewCount: 18
+    reviewCount: 18,
+    bookedDates: [
+      { start: createDate(2025, 5, 20), end: createDate(2025, 5, 23) },
+      { start: createDate(2025, 6, 5), end: createDate(2025, 6, 18) }
+    ]
   },
   {
     id: 3,
@@ -123,6 +137,9 @@ export const properties: Property[] = [
       { id: 4, name: "Billiards Table", icon: "table" }
     ],
     rating: 4.9,
-    reviewCount: 32
+    reviewCount: 32,
+    bookedDates: [
+      { start: createDate(2025, 5, 28), end: createDate(2025, 6, 2) }
+    ]
   }
 ];

@@ -11,6 +11,11 @@ export interface PropertyImage {
   alt: string;
 }
 
+export interface BookedDate {
+  start: Date;
+  end: Date;
+}
+
 export interface Property {
   id: number;
   name: string;
@@ -31,4 +36,5 @@ export interface Property {
   facilities: PropertyFacility[];
   rating: number;
   reviewCount: number;
+  bookedDates?: BookedDate[]; // Dates that are already booked
 }
