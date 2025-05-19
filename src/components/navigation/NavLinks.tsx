@@ -2,25 +2,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ChevronDown } from 'lucide-react';
 import PropertiesDropdown from './PropertiesDropdown';
 
 interface NavLinksProps {
   toggleMenu?: () => void;
   className?: string;
   linkClassName?: string;
+  isMobile?: boolean;
 }
 
 const NavLinks: React.FC<NavLinksProps> = ({ 
   toggleMenu, 
   className = '', 
-  linkClassName = 'text-nest-dark hover:text-nest-primary font-medium transition-colors'
+  linkClassName = 'text-nest-dark hover:text-nest-primary font-medium transition-colors',
+  isMobile = false
 }) => {
   const { isAdmin, isAuthenticated } = useAuth();
   
@@ -40,6 +35,7 @@ const NavLinks: React.FC<NavLinksProps> = ({
         toggleMenu={toggleMenu}
         isAuthenticated={isAuthenticated}
         isAdmin={isAdmin}
+        isMobile={isMobile}
       />
       
       <Link 

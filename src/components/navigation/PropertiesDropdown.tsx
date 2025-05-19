@@ -8,20 +8,67 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from 'lucide-react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 interface PropertiesDropdownProps {
   linkClassName: string;
   toggleMenu?: () => void;
   isAuthenticated: boolean;
   isAdmin: boolean;
+  isMobile?: boolean;
 }
 
 const PropertiesDropdown: React.FC<PropertiesDropdownProps> = ({
   linkClassName,
   toggleMenu,
   isAuthenticated,
-  isAdmin
+  isAdmin,
+  isMobile = false
 }) => {
+  // Use Collapsible component for mobile view
+  if (isMobile) {
+    return (
+      <Collapsible className="w-full">
+        <CollapsibleTrigger className={`${linkClassName} flex items-center justify-between w-full py-2`}>
+          <span>Properties</span>
+          <ChevronDown className="h-4 w-4" />
+        </CollapsibleTrigger>
+        <CollapsibleContent className="pl-4 border-l-2 border-gray-200 mt-1 space-y-2">
+          <Link 
+            to="/properties" 
+            className={`${linkClassName} block py-2`}
+            onClick={toggleMenu}
+          >
+            Browse Properties
+          </Link>
+          
+          {/* Show Submit Property for authenticated users or admins */}
+          {(isAuthenticated || isAdmin) && (
+            <Link 
+              to="/submit-property" 
+              className={`${linkClassName} block py-2`}
+              onClick={toggleMenu}
+            >
+              Submit Property
+            </Link>
+          )}
+          
+          {/* Admin specific menu item */}
+          {isAdmin && (
+            <Link 
+              to="/admin/properties" 
+              className={`${linkClassName} block py-2`}
+              onClick={toggleMenu}
+            >
+              Approve Properties
+            </Link>
+          )}
+        </CollapsibleContent>
+      </Collapsible>
+    );
+  }
+  
+  // Desktop view uses the dropdown
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className={`${linkClassName} inline-flex items-center`}>
