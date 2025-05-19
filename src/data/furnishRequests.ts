@@ -1,0 +1,53 @@
+
+import { FurnishRequest } from "@/types/property";
+
+export const furnishRequests: FurnishRequest[] = [
+  {
+    id: 1,
+    fullName: "John Smith",
+    email: "john.smith@example.com",
+    phone: "+1 234-567-8901",
+    address: "123 Main Street",
+    city: "New York",
+    state: "NY",
+    zipCode: "10001",
+    propertyType: "Apartment",
+    squareMeters: 85,
+    budget: 5000,
+    notes: "Looking for modern furniture for my new apartment. Preferably in neutral colors.",
+    status: "pending",
+    submittedAt: new Date("2025-05-15")
+  },
+  {
+    id: 2,
+    fullName: "Sarah Johnson",
+    email: "sarah.j@example.com",
+    phone: "+1 345-678-9012",
+    address: "456 Park Avenue",
+    city: "Chicago",
+    state: "IL",
+    zipCode: "60601",
+    propertyType: "House",
+    squareMeters: 150,
+    budget: 8500,
+    notes: "Need to furnish my entire 3-bedroom house. Looking for quality, durable furniture.",
+    status: "contacted",
+    submittedAt: new Date("2025-05-12")
+  },
+  {
+    id: 3,
+    fullName: "Michael Brown",
+    email: "michael.brown@example.com",
+    phone: "+1 456-789-0123",
+    address: "789 Broadway",
+    city: "San Francisco",
+    state: "CA",
+    zipCode: "94103",
+    propertyType: "Studio",
+    squareMeters: 50,
+    budget: 3000,
+    notes: "Need compact, multi-functional furniture for my small studio apartment.",
+    status: "scheduled",
+    submittedAt: new Date("2025-05-10")
+  }
+];

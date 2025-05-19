@@ -19,6 +19,8 @@ import PropertySubmit from "./pages/PropertySubmit";
 import AdminProperties from "./pages/AdminProperties";
 import OwnerRentals from "./pages/OwnerRentals";
 import MyBookings from "./pages/MyBookings";
+import FurnishRequest from "./pages/FurnishRequest";
+import AdminFurnishRequests from "./pages/AdminFurnishRequests";
 import NotFound from "./pages/NotFound";
 
 // Create a client
@@ -42,8 +44,10 @@ const App = () => {
               <Route path="/properties/:id" element={<PropertyDetails />} />
               <Route path="/submit-property" element={<ProtectedRoute><PropertySubmit /></ProtectedRoute>} />
               <Route path="/admin/properties" element={<AdminRoute><AdminProperties /></AdminRoute>} />
+              <Route path="/admin/furnish-requests" element={<AdminRoute><AdminFurnishRequests /></AdminRoute>} />
               <Route path="/my-rentals" element={<ProtectedRoute><OwnerRentals /></ProtectedRoute>} />
               <Route path="/my-bookings" element={<ProtectedRoute><MyBookings /></ProtectedRoute>} />
+              <Route path="/furnish-your-home" element={<FurnishRequest />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

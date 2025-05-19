@@ -75,3 +75,35 @@ export interface PropertySubmission {
   categories: PropertyCategory[];
   documents: PropertyDocument[];
 }
+
+// Furnish Your Home types
+export interface FurnishRequest {
+  id: number;
+  fullName: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  propertyType: string;
+  squareMeters: number;
+  budget: number;
+  notes: string;
+  status: 'pending' | 'contacted' | 'scheduled' | 'completed' | 'cancelled';
+  submittedAt: Date;
+}
+
+export interface FurnishRequestSubmission {
+  fullName: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  propertyType: string;
+  squareMeters: number;
+  budget: number;
+  notes: string;
+}
