@@ -122,7 +122,7 @@ const SearchBar = ({ className = "" }: SearchBarProps) => {
         <div className="flex-1 flex items-center gap-2">
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="outline" className="flex-1">
+              <Button variant="outline" className="flex-1 text-gray-700 hover:text-gray-900 border-gray-300 hover:bg-gray-100">
                 <Tag className="mr-2 h-4 w-4" />
                 <span>Categories</span>
                 {selectedCategories.length > 0 && (
