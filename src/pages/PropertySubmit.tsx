@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm, useFieldArray } from 'react-hook-form';
@@ -22,6 +21,13 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
@@ -30,7 +36,7 @@ import { Badge } from '@/components/ui/badge';
 const propertyFormSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
   description: z.string().min(20, "Description must be at least 20 characters"),
-  location: z.string().min(5, "Location must be at least 5 characters"),
+  location: z.string().min(1, "Location is required"),
   pricePerDay: z.coerce.number().positive("Price must be positive"),
   pricePerWeek: z.coerce.number().positive("Price must be positive"),
   pricePerMonth: z.coerce.number().positive("Price must be positive"),
@@ -55,6 +61,17 @@ const propertyFormSchema = z.object({
 });
 
 type PropertyFormValues = z.infer<typeof propertyFormSchema>;
+
+// Array of available locations
+const LOCATIONS = [
+  { value: "new-cairo", label: "New Cairo" },
+  { value: "sheikh-zayed", label: "Sheikh Zayed" },
+  { value: "cairo", label: "Cairo" },
+  { value: "alexandria", label: "Alexandria" },
+  { value: "gouna", label: "Gouna" },
+  { value: "sahel", label: "Sahel" },
+  { value: "ain-el-sokhna", label: "Ain El Sokhna" },
+];
 
 const PropertySubmit = () => {
   const { user } = useAuth();
@@ -224,10 +241,25 @@ const PropertySubmit = () => {
                       <FormItem>
                         <FormLabel>Location</FormLabel>
                         <FormControl>
-                          <Input placeholder="Miami Beach, Florida" {...field} />
+                          <Select 
+                            onValueChange={field.onChange}
+                            value={field.value}
+                            defaultValue={field.value}
+                          >
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select a location" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {LOCATIONS.map((location) => (
+                                <SelectItem key={location.value} value={location.value}>
+                                  {location.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
                         </FormControl>
                         <FormDescription>
-                          City, state or region
+                          Select where your property is located
                         </FormDescription>
                         <FormMessage />
                       </FormItem>

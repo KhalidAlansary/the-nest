@@ -21,10 +21,13 @@ const HeroSection = () => {
             <div className="flex-1">
               <select className="w-full px-4 py-2.5 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-nest-primary text-gray-700 placeholder-gray-500" aria-label="Select location">
                 <option value="">Where do you want to stay?</option>
-                <option value="new-york">New York</option>
-                <option value="los-angeles">Los Angeles</option>
-                <option value="chicago">Chicago</option>
-                <option value="miami">Miami</option>
+                <option value="new-cairo">New Cairo</option>
+                <option value="sheikh-zayed">Sheikh Zayed</option>
+                <option value="cairo">Cairo</option>
+                <option value="alexandria">Alexandria</option>
+                <option value="gouna">Gouna</option>
+                <option value="sahel">Sahel</option>
+                <option value="ain-el-sokhna">Ain El Sokhna</option>
               </select>
             </div>
             <div className="flex-1">
