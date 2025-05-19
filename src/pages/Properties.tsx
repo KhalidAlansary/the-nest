@@ -7,8 +7,10 @@ import SearchBar from '@/components/search/SearchBar';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
-import { Bed, Bath, Users, DollarSign, Star } from "lucide-react";
+import { Bed, Bath, Users, DollarSign, Star, Tag } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { properties } from '@/data/properties';
+import { PROPERTY_CATEGORIES } from '@/types/property';
 
 const Properties = () => {
   const [searchParams] = useSearchParams();
@@ -20,6 +22,8 @@ const Properties = () => {
     const duration = searchParams.get('duration');
     const minPrice = parseInt(searchParams.get('minPrice') || '0');
     const maxPrice = parseInt(searchParams.get('maxPrice') || '5000');
+    const categoriesParam = searchParams.get('categories');
+    const categories = categoriesParam ? categoriesParam.split(',') : [];
     
     const filtered = properties.filter(property => {
       // Filter by location if specified
@@ -30,6 +34,14 @@ const Properties = () => {
       // Filter by price range
       if (property.pricePerDay < minPrice || property.pricePerDay > maxPrice) {
         return false;
+      }
+      
+      // Filter by categories if specified
+      if (categories.length > 0) {
+        const hasMatchingCategory = categories.some(category => 
+          property.categories.includes(category as any)
+        );
+        if (!hasMatchingCategory) return false;
       }
       
       return true;
@@ -84,6 +96,17 @@ const Properties = () => {
                       <CardDescription className="text-gray-500">
                         {property.location}
                       </CardDescription>
+                      <div className="flex flex-wrap gap-1 mt-2">
+                        {property.categories.map(category => {
+                          const categoryInfo = PROPERTY_CATEGORIES.find(c => c.value === category);
+                          return (
+                            <Badge key={category} variant="outline" className="text-xs">
+                              <Tag className="mr-1 h-3 w-3" />
+                              {categoryInfo?.label || category}
+                            </Badge>
+                          );
+                        })}
+                      </div>
                     </CardHeader>
                     
                     <CardContent className="pb-2 flex-grow">

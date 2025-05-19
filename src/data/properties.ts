@@ -1,5 +1,5 @@
 
-import { Property } from "@/types/property";
+import { Property, PropertyCategory } from "@/types/property";
 
 // Helper function to create dates for the sample booked dates
 const createDate = (year: number, month: number, day: number) => {
@@ -40,6 +40,7 @@ export const properties: Property[] = [
     bedrooms: 3,
     bathrooms: 2,
     maxGuests: 6,
+    categories: ['families', 'friends'],
     facilities: [
       { id: 1, name: "TV", icon: "tv" },
       { id: 2, name: "WiFi", icon: "wifi" },
@@ -87,6 +88,7 @@ export const properties: Property[] = [
     bedrooms: 2,
     bathrooms: 1,
     maxGuests: 4,
+    categories: ['honeymoon', 'friends'],
     facilities: [
       { id: 1, name: "TV", icon: "tv" },
       { id: 2, name: "WiFi", icon: "wifi" }
@@ -131,6 +133,7 @@ export const properties: Property[] = [
     bedrooms: 1,
     bathrooms: 1,
     maxGuests: 2,
+    categories: ['work-from-home', 'honeymoon'],
     facilities: [
       { id: 1, name: "TV", icon: "tv" },
       { id: 2, name: "WiFi", icon: "wifi" },

@@ -22,6 +22,15 @@ export interface PropertyDocument {
   type: 'lease' | 'id';
 }
 
+export type PropertyCategory = 'families' | 'friends' | 'honeymoon' | 'work-from-home';
+
+export const PROPERTY_CATEGORIES: { value: PropertyCategory; label: string; icon: string }[] = [
+  { value: 'families', label: 'Families', icon: 'users' },
+  { value: 'friends', label: 'Friends', icon: 'users' },
+  { value: 'honeymoon', label: 'Honeymoon', icon: 'heart' },
+  { value: 'work-from-home', label: 'Work From Home', icon: 'briefcase' }
+];
+
 export interface Property {
   id: number;
   name: string;
@@ -42,6 +51,7 @@ export interface Property {
   facilities: PropertyFacility[];
   rating: number;
   reviewCount: number;
+  categories: PropertyCategory[];
   bookedDates?: BookedDate[]; // Dates that are already booked
   documents?: PropertyDocument[]; // Documents for verification
 }
@@ -62,5 +72,6 @@ export interface PropertySubmission {
   bathrooms: number;
   maxGuests: number;
   facilities: Omit<PropertyFacility, "id">[];
+  categories: PropertyCategory[];
   documents: PropertyDocument[];
 }

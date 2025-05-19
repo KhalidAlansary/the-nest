@@ -4,7 +4,7 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { toast } from 'sonner';
-import { FilePlus, FileText, Plus, Trash2, Upload } from 'lucide-react';
+import { FilePlus, FileText, Plus, Trash2, Upload, Tag } from 'lucide-react';
 
 import { useAuth } from '@/hooks/useAuth';
 import Navigation from '@/components/Navigation';
@@ -12,6 +12,7 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Form,
   FormControl,
@@ -31,6 +32,7 @@ import {
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
+import { PROPERTY_CATEGORIES, PropertyCategory } from '@/types/property';
 
 // Define the form schema
 const propertyFormSchema = z.object({
@@ -49,6 +51,7 @@ const propertyFormSchema = z.object({
       icon: z.string().default("tv"),
     })
   ),
+  categories: z.array(z.string()).min(1, "Select at least one category"),
   images: z.any().refine(files => files?.length > 0, {
     message: "At least one image is required",
   }),
@@ -95,6 +98,7 @@ const PropertySubmit = () => {
       bathrooms: 1,
       maxGuests: 2,
       facilities: [{ name: "WiFi", icon: "wifi" }],
+      categories: [],
       images: undefined,
       leaseDocument: undefined,
       idDocument: undefined,
@@ -261,6 +265,64 @@ const PropertySubmit = () => {
                         <FormDescription>
                           Select where your property is located
                         </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <h2 className="text-xl font-semibold">Property Categories</h2>
+                </CardHeader>
+                <CardContent>
+                  <FormField
+                    control={form.control}
+                    name="categories"
+                    render={() => (
+                      <FormItem>
+                        <div className="mb-4">
+                          <FormLabel className="text-base">Property Categories</FormLabel>
+                          <FormDescription>
+                            Select all categories that apply to your property
+                          </FormDescription>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          {PROPERTY_CATEGORIES.map((category) => (
+                            <FormField
+                              key={category.value}
+                              control={form.control}
+                              name="categories"
+                              render={({ field }) => {
+                                return (
+                                  <FormItem
+                                    key={category.value}
+                                    className="flex flex-row items-start space-x-3 space-y-0"
+                                  >
+                                    <FormControl>
+                                      <Checkbox
+                                        checked={field.value?.includes(category.value)}
+                                        onCheckedChange={(checked) => {
+                                          return checked
+                                            ? field.onChange([...field.value, category.value])
+                                            : field.onChange(
+                                                field.value?.filter(
+                                                  (value) => value !== category.value
+                                                )
+                                              )
+                                        }}
+                                      />
+                                    </FormControl>
+                                    <FormLabel className="font-normal">
+                                      {category.label}
+                                    </FormLabel>
+                                  </FormItem>
+                                )
+                              }}
+                            />
+                          ))}
+                        </div>
                         <FormMessage />
                       </FormItem>
                     )}

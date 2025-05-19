@@ -1,9 +1,16 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Search } from "lucide-react";
+import { Search, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { PROPERTY_CATEGORIES, PropertyCategory } from "@/types/property";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 interface SearchBarProps {
   className?: string;
@@ -20,10 +27,18 @@ const SearchBar = ({ className = "" }: SearchBarProps) => {
   const [minPrice, setMinPrice] = useState(searchParams.get('minPrice') || '0');
   const [maxPrice, setMaxPrice] = useState(searchParams.get('maxPrice') || '5000');
   
+  // Initialize categories from URL
+  const initialCategories = searchParams.get('categories')?.split(',') || [];
+  const [selectedCategories, setSelectedCategories] = useState<PropertyCategory[]>(
+    initialCategories.filter((cat): cat is PropertyCategory => 
+      PROPERTY_CATEGORIES.some(c => c.value === cat)
+    )
+  );
+  
   const handleSearch = () => {
     navigate({
       pathname: "/properties",
-      search: `?location=${location}&duration=${duration}&minPrice=${minPrice}&maxPrice=${maxPrice}`
+      search: `?location=${location}&duration=${duration}&minPrice=${minPrice}&maxPrice=${maxPrice}${selectedCategories.length > 0 ? `&categories=${selectedCategories.join(',')}` : ''}`
     });
   };
 
@@ -33,6 +48,14 @@ const SearchBar = ({ className = "" }: SearchBarProps) => {
 
   const handleMaxPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMaxPrice(e.target.value);
+  };
+  
+  const toggleCategory = (category: PropertyCategory) => {
+    setSelectedCategories(prev => 
+      prev.includes(category) 
+        ? prev.filter(c => c !== category) 
+        : [...prev, category]
+    );
   };
   
   return (
@@ -96,12 +119,52 @@ const SearchBar = ({ className = "" }: SearchBarProps) => {
             </div>
           </div>
         </div>
-        <Button 
-          className="bg-nest-primary hover:bg-nest-primary/90"
-          onClick={handleSearch}
-        >
-          <Search size={20} className="mr-2" /> Search
-        </Button>
+        <div className="flex-1 flex items-center gap-2">
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline" className="flex-1">
+                <Tag className="mr-2 h-4 w-4" />
+                <span>Categories</span>
+                {selectedCategories.length > 0 && (
+                  <span className="ml-1 rounded-full bg-slate-900 px-1.5 text-xs text-white">
+                    {selectedCategories.length}
+                  </span>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-56 p-3" align="start">
+              <div className="space-y-2">
+                <h4 className="font-medium leading-none">Property Type</h4>
+                <p className="text-sm text-muted-foreground">
+                  Select property categories
+                </p>
+                <div className="space-y-2 pt-2">
+                  {PROPERTY_CATEGORIES.map(category => (
+                    <div key={category.value} className="flex items-center space-x-2">
+                      <Checkbox 
+                        id={`category-${category.value}`}
+                        checked={selectedCategories.includes(category.value)}
+                        onCheckedChange={() => toggleCategory(category.value)}
+                      />
+                      <label 
+                        htmlFor={`category-${category.value}`}
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        {category.label}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
+          <Button 
+            className="bg-nest-primary hover:bg-nest-primary/90"
+            onClick={handleSearch}
+          >
+            <Search size={20} className="mr-2" /> Search
+          </Button>
+        </div>
       </div>
     </div>
   );
