@@ -53,6 +53,17 @@ const PropertiesDropdown: React.FC<PropertiesDropdownProps> = ({
             </Link>
           )}
           
+          {/* Show My Rentals for authenticated users */}
+          {isAuthenticated && (
+            <Link 
+              to="/my-rentals" 
+              className={`${linkClassName} block py-2`}
+              onClick={toggleMenu}
+            >
+              My Rentals
+            </Link>
+          )}
+          
           {/* Admin specific menu item */}
           {isAdmin && (
             <Link 
@@ -94,6 +105,19 @@ const PropertiesDropdown: React.FC<PropertiesDropdownProps> = ({
               onClick={toggleMenu}
             >
               Submit Property
+            </Link>
+          </DropdownMenuItem>
+        )}
+        
+        {/* Show My Rentals for authenticated users */}
+        {isAuthenticated && (
+          <DropdownMenuItem asChild>
+            <Link 
+              to="/my-rentals" 
+              className="w-full cursor-pointer"
+              onClick={toggleMenu}
+            >
+              My Rentals
             </Link>
           </DropdownMenuItem>
         )}
