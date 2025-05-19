@@ -4,6 +4,12 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import MyPropertiesDropdown from './MyPropertiesDropdown';
 import { ChevronDown } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface NavLinksProps {
   toggleMenu?: () => void;
@@ -50,27 +56,53 @@ const NavLinks: React.FC<NavLinksProps> = ({
 
       {/* Admin Dropdown - Only show when user is admin */}
       {isAdmin && (
-        <div className="relative group">
-          <div 
-            className={`${linkClassName} flex items-center cursor-pointer`}
-            role="button"
-            tabIndex={0}
-          >
-            Admin <ChevronDown size={16} className="ml-1" />
-          </div>
-          {!isMobile && (
-            <div className="absolute left-0 mt-1 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50 hidden group-hover:block">
-              <div className="py-1 divide-y divide-gray-100">
+        <>
+          {!isMobile ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger className={`${linkClassName} flex items-center gap-1`}>
+                Admin <ChevronDown size={16} />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-56 bg-white">
+                <DropdownMenuItem asChild>
+                  <Link
+                    to="/admin/properties"
+                    className="w-full"
+                    onClick={toggleMenu}
+                  >
+                    Manage Properties
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link
+                    to="/admin/furnish-requests"
+                    className="w-full"
+                    onClick={toggleMenu}
+                  >
+                    Furnish Requests
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <div>
+              <div 
+                className={`${linkClassName} flex items-center cursor-pointer`}
+                role="button"
+                tabIndex={0}
+              >
+                Admin <ChevronDown size={16} className="ml-1" />
+              </div>
+              <div className="pl-4 mt-2 space-y-2">
                 <Link
                   to="/admin/properties"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  className={`${linkClassName} block`}
                   onClick={toggleMenu}
                 >
                   Manage Properties
                 </Link>
                 <Link
                   to="/admin/furnish-requests"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  className={`${linkClassName} block`}
                   onClick={toggleMenu}
                 >
                   Furnish Requests
@@ -78,25 +110,7 @@ const NavLinks: React.FC<NavLinksProps> = ({
               </div>
             </div>
           )}
-          {isMobile && (
-            <div className="pl-4 mt-2 space-y-2">
-              <Link
-                to="/admin/properties"
-                className={`${linkClassName} block`}
-                onClick={toggleMenu}
-              >
-                Manage Properties
-              </Link>
-              <Link
-                to="/admin/furnish-requests"
-                className={`${linkClassName} block`}
-                onClick={toggleMenu}
-              >
-                Furnish Requests
-              </Link>
-            </div>
-          )}
-        </div>
+        </>
       )}
 
       <Link 
