@@ -39,7 +39,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Booking, ServiceRequestType } from '@/types/booking';
 import { bookings } from '@/data/bookings';
-import { Calendar, Home, Wrench, Broom, ShowerHead } from 'lucide-react';
+import { Calendar, Home, Wrench, Brush, ShowerHead } from 'lucide-react';
 
 const MyBookings = () => {
   const { user } = useAuth();
@@ -83,7 +83,7 @@ const MyBookings = () => {
   const getServiceIcon = (type: ServiceRequestType) => {
     switch (type) {
       case 'cleaning':
-        return <Broom className="h-4 w-4" />;
+        return <Brush className="h-4 w-4" />;
       case 'maintenance':
         return <Wrench className="h-4 w-4" />;
       case 'supplies':
@@ -304,7 +304,7 @@ const MyBookings = () => {
                 <SelectContent>
                   <SelectItem value="cleaning">
                     <div className="flex items-center">
-                      <Broom className="mr-2 h-4 w-4" />
+                      <Brush className="mr-2 h-4 w-4" />
                       <span>Cleaning</span>
                     </div>
                   </SelectItem>
