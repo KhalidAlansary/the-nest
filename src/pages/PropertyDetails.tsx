@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Navigation from '@/components/Navigation';
@@ -205,9 +204,8 @@ const PropertyDetails = () => {
                   
                   <div className="flex items-baseline mb-4">
                     <div className="text-3xl font-bold text-nest-primary flex items-center">
-                      <DollarSign size={24} />
                       <span>
-                        {selectedTab === 'day' 
+                        L.E.{selectedTab === 'day' 
                           ? property.pricePerDay
                           : selectedTab === 'week'
                           ? property.pricePerWeek
@@ -222,20 +220,20 @@ const PropertyDetails = () => {
                   <div className="text-sm text-gray-600 mb-6">
                     <div className="flex justify-between py-1">
                       <span>Base rate</span>
-                      <span>{getPrice()}</span>
+                      <span>{getPrice().replace('$', 'L.E.')}</span>
                     </div>
                     <div className="flex justify-between py-1">
                       <span>Cleaning fee</span>
-                      <span>$50</span>
+                      <span>L.E.50</span>
                     </div>
                     <div className="flex justify-between py-1">
                       <span>Service fee</span>
-                      <span>$30</span>
+                      <span>L.E.30</span>
                     </div>
                     <div className="border-t mt-2 pt-2 flex justify-between font-medium text-nest-dark">
                       <span>Total</span>
                       <span>
-                        ${selectedTab === 'day' 
+                        L.E.{selectedTab === 'day' 
                           ? property.pricePerDay + 80
                           : selectedTab === 'week'
                           ? property.pricePerWeek + 80

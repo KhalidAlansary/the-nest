@@ -228,7 +228,7 @@ const MyBookings = () => {
                           {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
                         </Badge>
                       </TableCell>
-                      <TableCell>${booking.totalAmount}</TableCell>
+                      <TableCell>L.E.{booking.totalAmount}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -267,7 +267,7 @@ const MyBookings = () => {
                           {booking.status === 'confirmed' ? 'Completed' : booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
                         </Badge>
                       </TableCell>
-                      <TableCell>${booking.totalAmount}</TableCell>
+                      <TableCell>L.E.{booking.totalAmount}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

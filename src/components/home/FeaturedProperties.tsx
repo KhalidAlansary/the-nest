@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { MapPin, Bed, Bath, Calendar, Star } from 'lucide-react';
@@ -8,7 +9,7 @@ const properties = [
     id: 1,
     title: 'Luxury Downtown Apartment',
     location: 'New York City, NY',
-    price: '$250',
+    price: 'L.E.250',
     duration: 'per day',
     bedrooms: 2,
     bathrooms: 2,
@@ -19,7 +20,7 @@ const properties = [
     id: 2,
     title: 'Beachfront Villa with Pool',
     location: 'Miami Beach, FL',
-    price: '$1,800',
+    price: 'L.E.1,800',
     duration: 'per week',
     bedrooms: 4,
     bathrooms: 3,
@@ -30,7 +31,7 @@ const properties = [
     id: 3,
     title: 'Modern Urban Loft',
     location: 'Chicago, IL',
-    price: '$3,200',
+    price: 'L.E.3,200',
     duration: 'per month',
     bedrooms: 1,
     bathrooms: 1,

@@ -79,7 +79,7 @@ const OwnerRentals = () => {
                 <CardTitle className="text-lg">Total Revenue</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-3xl font-bold text-nest-primary">${totalRevenue}</p>
+                <p className="text-3xl font-bold text-nest-primary">L.E.{totalRevenue}</p>
               </CardContent>
             </Card>
             
@@ -153,7 +153,7 @@ const OwnerRentals = () => {
                       <TableCell>{booking.guestName}</TableCell>
                       <TableCell>{format(booking.checkInDate, 'MMM dd, yyyy')}</TableCell>
                       <TableCell>{format(booking.checkOutDate, 'MMM dd, yyyy')}</TableCell>
-                      <TableCell className="text-right">${booking.totalAmount}</TableCell>
+                      <TableCell className="text-right">L.E.{booking.totalAmount}</TableCell>
                       <TableCell>
                         <Badge className={getStatusColor(booking.status)}>
                           {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}

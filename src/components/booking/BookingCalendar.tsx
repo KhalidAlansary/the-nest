@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { format, differenceInDays, differenceInWeeks, differenceInMonths, addDays, isBefore, isAfter, isSameDay } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
@@ -82,7 +81,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ property, isOpen, onC
       }
       
       // Add cleaning fee and service fee
-      total += 80; // $50 cleaning + $30 service fee
+      total += 80; // L.E. 50 cleaning + L.E. 30 service fee
       
       setSummary({
         days,
@@ -161,19 +160,19 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ property, isOpen, onC
                   <div className="space-y-1 mt-2">
                     <div className="flex justify-between">
                       <span>Accommodation</span>
-                      <span>${summary.total - 80}</span>
+                      <span>L.E.{summary.total - 80}</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Cleaning fee</span>
-                      <span>$50</span>
+                      <span>L.E.50</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Service fee</span>
-                      <span>$30</span>
+                      <span>L.E.30</span>
                     </div>
                     <div className="border-t pt-2 mt-2 flex justify-between font-medium">
                       <span>Total</span>
-                      <span>${summary.total}</span>
+                      <span>L.E.{summary.total}</span>
                     </div>
                   </div>
                 </div>
@@ -199,7 +198,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ property, isOpen, onC
                 onClose();
               }}
             >
-              Confirm Booking - ${summary.total}
+              Confirm Booking - L.E.{summary.total}
             </Button>
           </div>
         </DialogFooter>
