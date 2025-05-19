@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { format, differenceInDays, differenceInWeeks, differenceInMonths, addDays, isBefore, isAfter, isSameDay } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
@@ -12,11 +13,13 @@ interface BookingCalendarProps {
   onClose: () => void;
 }
 
+type DateRangeType = {
+  from: Date | undefined;
+  to: Date | undefined;
+};
+
 const BookingCalendar: React.FC<BookingCalendarProps> = ({ property, isOpen, onClose }) => {
-  const [dateRange, setDateRange] = useState<{
-    from: Date | undefined;
-    to: Date | undefined;
-  }>({
+  const [dateRange, setDateRange] = useState<DateRangeType>({
     from: undefined,
     to: undefined
   });
@@ -99,6 +102,10 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ property, isOpen, onC
     }
   }, [dateRange, property]);
 
+  const handleDateSelect = (range: { from: Date | undefined; to: Date | undefined }) => {
+    setDateRange(range);
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={() => onClose()}>
       <DialogContent className="sm:max-w-[600px]">
@@ -120,7 +127,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ property, isOpen, onC
             <Calendar
               mode="range"
               selected={dateRange}
-              onSelect={setDateRange}
+              onSelect={handleDateSelect}
               numberOfMonths={1}
               disabled={(date) => {
                 return (
