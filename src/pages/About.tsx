@@ -90,28 +90,28 @@ const About = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[
                 {
-                  title: 'Quality & Trust',
-                  description: 'We carefully vet all properties to ensure they meet our high standards for quality, comfort, and safety.'
+                  title: "Quality & Trust",
+                  description: "We carefully vet all properties to ensure they meet our high standards for quality, comfort, and safety."
                 },
                 {
-                  title: 'Flexibility',
-                  description: 'We understand that everyone's needs are different, which is why we offer flexible rental durations to suit your schedule.'
+                  title: "Flexibility",
+                  description: "We understand that everyone's needs are different, which is why we offer flexible rental durations to suit your schedule."
                 },
                 {
-                  title: 'Transparency',
-                  description: 'No hidden fees or surprises. We believe in clear, honest communication with our guests and property owners.'
+                  title: "Transparency",
+                  description: "No hidden fees or surprises. We believe in clear, honest communication with our guests and property owners."
                 },
                 {
-                  title: 'Customer Service',
-                  description: 'Our dedicated support team is available 24/7 to assist with any questions or issues that may arise.'
+                  title: "Customer Service",
+                  description: "Our dedicated support team is available 24/7 to assist with any questions or issues that may arise."
                 },
                 {
-                  title: 'Innovation',
-                  description: 'We continuously improve our platform to make finding and booking your rental as seamless as possible.'
+                  title: "Innovation",
+                  description: "We continuously improve our platform to make finding and booking your rental as seamless as possible."
                 },
                 {
-                  title: 'Community',
-                  description: 'We're building a community of guests and hosts who share our vision of a better rental experience.'
+                  title: "Community",
+                  description: "We're building a community of guests and hosts who share our vision of a better rental experience."
                 }
               ].map((value, index) => (
                 <div key={index} className="bg-white p-6 rounded-lg shadow-md">
