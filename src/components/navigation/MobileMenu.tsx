@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { X } from 'lucide-react';
 import NavLinks from './NavLinks';
 import AuthButtons from './AuthButtons';
 

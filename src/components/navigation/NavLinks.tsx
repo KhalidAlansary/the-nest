@@ -2,6 +2,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ChevronDown } from 'lucide-react';
+import PropertiesDropdown from './PropertiesDropdown';
 
 interface NavLinksProps {
   toggleMenu?: () => void;
@@ -14,7 +22,7 @@ const NavLinks: React.FC<NavLinksProps> = ({
   className = '', 
   linkClassName = 'text-nest-dark hover:text-nest-primary font-medium transition-colors'
 }) => {
-  const { isAdmin } = useAuth();
+  const { isAdmin, isAuthenticated } = useAuth();
   
   return (
     <div className={className}>
@@ -25,13 +33,15 @@ const NavLinks: React.FC<NavLinksProps> = ({
       >
         Home
       </Link>
-      <Link 
-        to="/properties" 
-        className={linkClassName}
-        onClick={toggleMenu}
-      >
-        Properties
-      </Link>
+      
+      {/* Properties Dropdown */}
+      <PropertiesDropdown 
+        linkClassName={linkClassName} 
+        toggleMenu={toggleMenu}
+        isAuthenticated={isAuthenticated}
+        isAdmin={isAdmin}
+      />
+      
       <Link 
         to="/about" 
         className={linkClassName}
@@ -39,6 +49,7 @@ const NavLinks: React.FC<NavLinksProps> = ({
       >
         About Us
       </Link>
+      
       <Link 
         to="/contact" 
         className={linkClassName}
@@ -46,24 +57,6 @@ const NavLinks: React.FC<NavLinksProps> = ({
       >
         Contact
       </Link>
-      <Link 
-        to="/submit-property" 
-        className={linkClassName}
-        onClick={toggleMenu}
-      >
-        Submit Property
-      </Link>
-      
-      {/* Admin link - only visible to admin users */}
-      {isAdmin && (
-        <Link 
-          to="/admin/properties" 
-          className={linkClassName}
-          onClick={toggleMenu}
-        >
-          Admin
-        </Link>
-      )}
     </div>
   );
 };
