@@ -25,7 +25,8 @@ const MyPropertiesDropdown: React.FC<MyPropertiesDropdownProps> = ({
   const [isOpen, setIsOpen] = useState(false);
 
   const menuItems = [
-    { title: "My Submissions", path: "/my-submissions", description: "View your pending and rejected property submissions" },
+    { title: "Submit Property", path: "/submit-property", description: "Submit a new property for approval" },
+    { title: "My Submissions", path: "/my-submissions", description: "View your pending and approved property submissions" },
     { title: "My Rentals", path: "/my-rentals", description: "Manage your rental properties" },
     { title: "Requests", path: "/requests", description: "View maintenance and cleaning requests" },
   ];

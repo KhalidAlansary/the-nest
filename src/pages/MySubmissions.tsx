@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { Badge } from '@/components/ui/badge';
@@ -45,8 +46,8 @@ const MySubmissions = () => {
       day: 'numeric'
     });
 
-  const PropertySubmission = ({ submission }) => {
-    const statusColor = statusColors[submission.status];
+  const PropertySubmission = ({ submission }: { submission: any }) => {
+    const statusColor = statusColors[submission.status as keyof typeof statusColors];
 
     return (
       <Card className="mb-4">
@@ -94,6 +95,7 @@ const MySubmissions = () => {
     );
   };
 
+  // Type-safe filtering
   const grouped = {
     all: submissions,
     pending: submissions.filter(sub => sub.status === 'pending'),
@@ -120,8 +122,8 @@ const MySubmissions = () => {
 
             {['all', 'pending', 'approved', 'rejected'].map(status => (
               <TabsContent key={status} value={status}>
-                {grouped[status].length > 0 ? (
-                  grouped[status].map(sub => (
+                {grouped[status as keyof typeof grouped].length > 0 ? (
+                  grouped[status as keyof typeof grouped].map((sub: any) => (
                     <PropertySubmission key={sub._id} submission={sub} />
                   ))
                 ) : (

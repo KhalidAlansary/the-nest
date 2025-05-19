@@ -2,7 +2,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import PropertiesDropdown from './PropertiesDropdown';
 import MyPropertiesDropdown from './MyPropertiesDropdown';
 
 interface NavLinksProps {
@@ -30,14 +29,14 @@ const NavLinks: React.FC<NavLinksProps> = ({
         Home
       </Link>
       
-      {/* Properties Dropdown */}
-      <PropertiesDropdown 
-        linkClassName={linkClassName} 
-        toggleMenu={toggleMenu}
-        isAuthenticated={isAuthenticated}
-        isAdmin={isAdmin}
-        isMobile={isMobile}
-      />
+      {/* Properties Link */}
+      <Link 
+        to="/properties" 
+        className={linkClassName}
+        onClick={toggleMenu}
+      >
+        Browse Properties
+      </Link>
 
       {/* My Properties Dropdown - Only show when authenticated */}
       {isAuthenticated && (
