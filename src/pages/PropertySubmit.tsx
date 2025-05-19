@@ -153,31 +153,45 @@ const PropertySubmit = () => {
   };
 
   // Handle form submission
-  const onSubmit = (data: PropertyFormValues) => {
+  const onSubmit = async (data: PropertyFormValues) => {
     setIsSubmitting(true);
     
-    // In a real application, you would send this data to your backend
-    // For now, we'll just simulate a submission
-    setTimeout(() => {
-      toast.success("Property submitted successfully", {
-        description: "Your property will be reviewed by our team."
-      });
-      setIsSubmitting(false);
-      navigate("/properties");
-    }, 1500);
-
-    console.log("Submitted data:", {
-      ...data,
-      owner: {
-        id: 1, // In a real app, this would come from the authenticated user
-        name: user?.username || "Anonymous",
-      },
-      images: images,
-      documents: [
-        { name: "Lease Document", file: leaseFile, type: "lease" as const },
-        { name: "ID Document", file: idFile, type: "id" as const },
-      ],
+    const formData = new FormData();
+    formData.append('name', data.name);
+    formData.append('description', data.description);
+    formData.append('location', data.location);
+    formData.append('pricePerDay', data.pricePerDay.toString());
+    formData.append('pricePerWeek', data.pricePerWeek.toString());
+    formData.append('pricePerMonth', data.pricePerMonth.toString());
+    formData.append('bedrooms', data.bedrooms.toString());
+    formData.append('bathrooms', data.bathrooms.toString());
+    formData.append('maxGuests', data.maxGuests.toString());
+    formData.append('categories', JSON.stringify(data.categories));
+    formData.append('facilities', JSON.stringify(data.facilities));
+    formData.append('owner', user?.id || ''); // assuming useAuth provides this
+  
+    images.forEach((file) => {
+      formData.append('images', file);
     });
+    if (leaseFile) formData.append('leaseDocument', leaseFile);
+    if (idFile) formData.append('idDocument', idFile);
+  
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/properties`, {
+        method: 'POST',
+        body: formData,
+      });
+  
+      if (!res.ok) throw new Error('Submission failed');
+      
+      toast.success("Property submitted successfully");
+      navigate("/properties");
+    } catch (err) {
+      toast.error("Failed to submit property");
+      console.error(err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

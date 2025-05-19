@@ -1,4 +1,4 @@
-
+// Full Signup component with backend integration
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '@/components/Navigation';
@@ -18,17 +18,36 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (password !== confirmPassword) {
       toast.error('Passwords do not match');
       return;
     }
 
-    // For now, just show a success message and redirect
-    toast.success('Account created successfully!');
-    navigate('/login');
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+          name,
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || 'Registration failed');
+      }
+
+      toast.success('Account created successfully!');
+      navigate('/login');
+    } catch (error: any) {
+      toast.error(error.message || 'An error occurred');
+    }
   };
 
   return (

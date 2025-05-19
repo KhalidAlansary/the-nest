@@ -1,14 +1,16 @@
-
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 type User = {
+  id: string;
   username: string;
-  isAdmin?: boolean;
+  name?: string;
+  email?: string;
+  role?: 'user' | 'admin';
 } | null;
 
 type AuthContextType = {
   user: User;
-  login: (user: { username: string; isAdmin?: boolean }) => void;
+  login: (userData: User) => void;
   logout: () => void;
   isAuthenticated: boolean;
   isAdmin: boolean;
@@ -19,23 +21,20 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User>(null);
 
-  // On initial load, check if user data exists in localStorage
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       try {
         setUser(JSON.parse(storedUser));
       } catch (error) {
-        console.error('Failed to parse stored user data', error);
+        console.error('Failed to parse stored user:', error);
         localStorage.removeItem('user');
       }
     }
   }, []);
 
-  const login = (userData: { username: string; isAdmin?: boolean }) => {
-    console.log('Logging in with data:', userData);
+  const login = (userData: User) => {
     setUser(userData);
-    // In a real app, you would store the user in localStorage or a secure cookie
     localStorage.setItem('user', JSON.stringify(userData));
   };
 
@@ -44,12 +43,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem('user');
   };
 
-  const value = {
+  const value: AuthContextType = {
     user,
     login,
     logout,
     isAuthenticated: !!user,
-    isAdmin: !!user?.isAdmin,
+    isAdmin: user?.role === 'admin',
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
@@ -57,8 +56,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
+  if (!context) throw new Error('useAuth must be used within an AuthProvider');
   return context;
 };

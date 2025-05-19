@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
@@ -17,15 +16,28 @@ const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (username === 'admin' && password === 'admin123') {
-      login({ username, isAdmin: true });
-      toast.success('Successfully logged in as admin!');
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: username, password })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Login failed');
+      }
+
+      localStorage.setItem('token', data.token);
+      login(data.user); // user contains role
+      toast.success('Successfully logged in!');
       navigate('/');
-    } else {
-      toast.error('Invalid credentials. Please try again.');
+    } catch (error: any) {
+      toast.error(error.message || 'Invalid credentials');
     }
   };
 
@@ -43,18 +55,18 @@ const Login = () => {
             
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
+                <Label htmlFor="username">Email Address</Label>
                 <div className="relative">
                   <div className="absolute left-3 top-3 text-gray-400">
                     <User size={18} />
                   </div>
                   <Input
                     id="username"
-                    type="text"
+                    type="email"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     className="pl-10"
-                    placeholder="Enter your username"
+                    placeholder="Enter your email"
                     required
                   />
                 </div>
