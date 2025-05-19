@@ -62,7 +62,7 @@ const AdminFurnishRequests = () => {
       case 'pending': return 'secondary';
       case 'contacted': return 'outline';
       case 'scheduled': return 'default';
-      case 'completed': return 'success';
+      case 'completed': return 'secondary'; // Changed from 'success' to 'secondary'
       case 'cancelled': return 'destructive';
       default: return 'outline';
     }
