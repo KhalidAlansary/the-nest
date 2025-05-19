@@ -406,7 +406,7 @@ const PropertySubmit = () => {
                       name="pricePerDay"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Price Per Day ($)</FormLabel>
+                          <FormLabel>Price Per Day (L.E.)</FormLabel>
                           <FormControl>
                             <Input type="number" min="0" step="0.01" {...field} />
                           </FormControl>
@@ -420,7 +420,7 @@ const PropertySubmit = () => {
                       name="pricePerWeek"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Price Per Week ($)</FormLabel>
+                          <FormLabel>Price Per Week (L.E.)</FormLabel>
                           <FormControl>
                             <Input type="number" min="0" step="0.01" {...field} />
                           </FormControl>
@@ -434,7 +434,7 @@ const PropertySubmit = () => {
                       name="pricePerMonth"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Price Per Month ($)</FormLabel>
+                          <FormLabel>Price Per Month (L.E.)</FormLabel>
                           <FormControl>
                             <Input type="number" min="0" step="0.01" {...field} />
                           </FormControl>

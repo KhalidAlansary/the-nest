@@ -304,7 +304,7 @@ const FurnishRequest = () => {
                       name="budget"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Budget ($)</FormLabel>
+                          <FormLabel>Budget (L.E.)</FormLabel>
                           <FormControl>
                             <Input type="number" min="0" {...field} />
                           </FormControl>

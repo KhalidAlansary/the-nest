@@ -68,7 +68,15 @@ const MySubmissions = () => {
             </div>
             <div>
               <p className="text-sm text-gray-500">Daily Price</p>
-              <p>${submission.pricePerDay}/day</p>
+              <p>L.E.{submission.pricePerDay}/day</p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">Weekly Price</p>
+              <p>L.E.{submission.pricePerWeek}/week</p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">Monthly Price</p>
+              <p>L.E.{submission.pricePerMonth}/month</p>
             </div>
           </div>
           <div className="mt-4">

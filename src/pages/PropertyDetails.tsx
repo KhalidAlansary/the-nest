@@ -38,11 +38,11 @@ const PropertyDetails = () => {
   const getPrice = () => {
     switch (selectedTab) {
       case 'day':
-        return `$${property.pricePerDay} / night`;
+        return `L.E. ${property.pricePerDay} / night`;
       case 'week':
-        return `$${property.pricePerWeek} / week`;
+        return `L.E. ${property.pricePerWeek} / week`;
       case 'month':
-        return `$${property.pricePerMonth} / month`;
+        return `L.E. ${property.pricePerMonth} / month`;
     }
   };
 
