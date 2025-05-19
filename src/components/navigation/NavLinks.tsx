@@ -21,7 +21,7 @@ const NavLinks: React.FC<NavLinksProps> = ({
   const { isAdmin, isAuthenticated } = useAuth();
   
   return (
-    <div className={`${className} items-center gap-8`}>
+    <div className={`${className} items-center gap-5`}>
       <Link 
         to="/" 
         className={linkClassName}
