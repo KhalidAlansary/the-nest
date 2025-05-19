@@ -49,7 +49,7 @@ const Properties = () => {
             <p className="text-gray-600 max-w-3xl mx-auto mb-8">
               Browse our curated selection of premium properties designed for short-term and extended stays.
             </p>
-            <SearchBar className="max-w-4xl mx-auto mb-8" showPriceInputs={true} />
+            <SearchBar className="max-w-4xl mx-auto mb-8" />
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

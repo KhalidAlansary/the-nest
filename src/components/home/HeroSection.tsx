@@ -13,8 +13,7 @@ const HeroSection = () => {
           Discover the perfect rental property for your daily, weekly, or monthly stay. Your comfort is our priority.
         </p>
         
-        {/* Search Form - without price inputs */}
-        <SearchBar className="max-w-4xl mx-auto animate-slide-up" showPriceInputs={false} />
+        <SearchBar className="max-w-4xl mx-auto animate-slide-up" />
       </div>
     </div>
   );
