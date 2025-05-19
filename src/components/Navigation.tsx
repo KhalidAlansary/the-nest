@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, LogIn, User } from 'lucide-react';
@@ -44,6 +43,9 @@ const Navigation = () => {
             </Link>
             <Link to="/contact" className="text-nest-dark hover:text-nest-primary font-medium transition-colors">
               Contact
+            </Link>
+            <Link to="/submit-property" className="text-nest-dark hover:text-nest-primary font-medium transition-colors">
+              Submit Property
             </Link>
             
             {isAuthenticated ? (
@@ -122,6 +124,13 @@ const Navigation = () => {
                 onClick={toggleMenu}
               >
                 Contact
+              </Link>
+              <Link 
+                to="/submit-property" 
+                className="py-2 text-nest-dark hover:text-nest-primary font-medium transition-colors"
+                onClick={toggleMenu}
+              >
+                Submit Property
               </Link>
               
               {isAuthenticated ? (
