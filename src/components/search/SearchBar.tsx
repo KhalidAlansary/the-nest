@@ -4,12 +4,14 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
+import { Input } from "@/components/ui/input";
 
 interface SearchBarProps {
   className?: string;
+  showPriceInputs?: boolean;
 }
 
-const SearchBar = ({ className = "" }: SearchBarProps) => {
+const SearchBar = ({ className = "", showPriceInputs = false }: SearchBarProps) => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   
@@ -20,12 +22,39 @@ const SearchBar = ({ className = "" }: SearchBarProps) => {
     parseInt(searchParams.get('minPrice') || '0'), 
     parseInt(searchParams.get('maxPrice') || '5000')
   ]);
+
+  const [minPrice, setMinPrice] = useState(priceRange[0].toString());
+  const [maxPrice, setMaxPrice] = useState(priceRange[1].toString());
+  
+  // Update slider when inputs change
+  useEffect(() => {
+    const min = parseInt(minPrice) || 0;
+    const max = parseInt(maxPrice) || 5000;
+    
+    if (min < max) {
+      setPriceRange([min, max]);
+    }
+  }, [minPrice, maxPrice]);
+
+  // Update inputs when slider changes
+  useEffect(() => {
+    setMinPrice(priceRange[0].toString());
+    setMaxPrice(priceRange[1].toString());
+  }, [priceRange]);
   
   const handleSearch = () => {
     navigate({
       pathname: "/properties",
       search: `?location=${location}&duration=${duration}&minPrice=${priceRange[0]}&maxPrice=${priceRange[1]}`
     });
+  };
+
+  const handleMinPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMinPrice(e.target.value);
+  };
+
+  const handleMaxPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMaxPrice(e.target.value);
   };
   
   return (
@@ -61,19 +90,44 @@ const SearchBar = ({ className = "" }: SearchBarProps) => {
             <option value="monthly">Monthly</option>
           </select>
         </div>
-        <div className="flex-1">
-          <div className="px-3 py-2 border border-gray-300 rounded bg-white">
-            <p className="text-gray-700 text-sm mb-2">Budget: L.E.{priceRange[0]} - L.E.{priceRange[1]}</p>
-            <Slider
-              value={priceRange}
-              min={0}
-              max={5000}
-              step={100}
-              onValueChange={setPriceRange}
-              className="py-2"
-            />
+        {showPriceInputs && (
+          <div className="flex-1">
+            <div className="px-3 py-2 border border-gray-300 rounded bg-white">
+              <div className="flex justify-between items-center mb-2">
+                <div className="flex items-center">
+                  <Input
+                    type="number"
+                    min="0"
+                    max="4900"
+                    value={minPrice}
+                    onChange={handleMinPriceChange}
+                    className="w-24 text-sm p-1 h-8"
+                    placeholder="Min"
+                  />
+                  <span className="mx-2">-</span>
+                  <Input
+                    type="number"
+                    min="100"
+                    max="5000"
+                    value={maxPrice}
+                    onChange={handleMaxPriceChange}
+                    className="w-24 text-sm p-1 h-8"
+                    placeholder="Max"
+                  />
+                </div>
+                <span className="text-xs text-gray-500">L.E.</span>
+              </div>
+              <Slider
+                value={priceRange}
+                min={0}
+                max={5000}
+                step={100}
+                onValueChange={setPriceRange}
+                className="py-2"
+              />
+            </div>
           </div>
-        </div>
+        )}
         <Button 
           className="bg-nest-primary hover:bg-nest-primary/90"
           onClick={handleSearch}
