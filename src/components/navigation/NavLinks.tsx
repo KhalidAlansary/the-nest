@@ -37,6 +37,14 @@ const NavLinks: React.FC<NavLinksProps> = ({
         isAdmin={isAdmin}
         isMobile={isMobile}
       />
+
+      <Link 
+        to="/furnish-your-home" 
+        className={linkClassName}
+        onClick={toggleMenu}
+      >
+        Furnish Your Nest
+      </Link>
       
       <Link 
         to="/about" 
