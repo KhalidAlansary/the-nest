@@ -19,6 +19,8 @@ import PropertySubmit from "./pages/PropertySubmit";
 import AdminProperties from "./pages/AdminProperties";
 import OwnerRentals from "./pages/OwnerRentals";
 import MyBookings from "./pages/MyBookings";
+import MySubmissions from "./pages/MySubmissions";
+import Requests from "./pages/Requests";
 import FurnishRequest from "./pages/FurnishRequest";
 import AdminFurnishRequests from "./pages/AdminFurnishRequests";
 import NotFound from "./pages/NotFound";
@@ -47,6 +49,8 @@ const App = () => {
               <Route path="/admin/furnish-requests" element={<AdminRoute><AdminFurnishRequests /></AdminRoute>} />
               <Route path="/my-rentals" element={<ProtectedRoute><OwnerRentals /></ProtectedRoute>} />
               <Route path="/my-bookings" element={<ProtectedRoute><MyBookings /></ProtectedRoute>} />
+              <Route path="/my-submissions" element={<ProtectedRoute><MySubmissions /></ProtectedRoute>} />
+              <Route path="/requests" element={<ProtectedRoute><Requests /></ProtectedRoute>} />
               <Route path="/furnish-your-home" element={<FurnishRequest />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

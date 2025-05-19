@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import PropertiesDropdown from './PropertiesDropdown';
+import MyPropertiesDropdown from './MyPropertiesDropdown';
 
 interface NavLinksProps {
   toggleMenu?: () => void;
@@ -37,6 +38,15 @@ const NavLinks: React.FC<NavLinksProps> = ({
         isAdmin={isAdmin}
         isMobile={isMobile}
       />
+
+      {/* My Properties Dropdown - Only show when authenticated */}
+      {isAuthenticated && (
+        <MyPropertiesDropdown
+          linkClassName={linkClassName}
+          toggleMenu={toggleMenu}
+          isMobile={isMobile}
+        />
+      )}
 
       <Link 
         to="/furnish-your-home" 
