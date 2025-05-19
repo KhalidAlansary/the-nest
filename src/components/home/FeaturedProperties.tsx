@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { MapPin, Bed, Bath, Calendar, Star } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 // Sample property data
 const properties = [
@@ -94,8 +95,8 @@ const FeaturedProperties = () => {
                     <span className="text-2xl font-bold text-nest-accent">{property.price}</span>
                     <span className="text-gray-600 text-sm"> {property.duration}</span>
                   </div>
-                  <Button variant="outline" className="border-nest-primary text-nest-primary hover:bg-nest-primary hover:text-white">
-                    View Details
+                  <Button variant="outline" className="border-nest-primary text-nest-primary hover:bg-nest-primary hover:text-white" asChild>
+                    <Link to={`/properties/${property.id}`}>View Details</Link>
                   </Button>
                 </div>
               </div>
@@ -104,8 +105,8 @@ const FeaturedProperties = () => {
         </div>
         
         <div className="text-center mt-12">
-          <Button className="bg-nest-primary hover:bg-nest-primary/90">
-            Browse All Properties
+          <Button className="bg-nest-primary hover:bg-nest-primary/90" asChild>
+            <Link to="/properties">Browse All Properties</Link>
           </Button>
         </div>
       </div>

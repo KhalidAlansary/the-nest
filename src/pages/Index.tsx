@@ -7,6 +7,7 @@ import FeaturedProperties from '@/components/home/FeaturedProperties';
 import HowItWorks from '@/components/home/HowItWorks';
 import Testimonials from '@/components/home/Testimonials';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const Index = () => {
   return (
@@ -31,11 +32,11 @@ const Index = () => {
               Join thousands of happy renters who've found their ideal temporary home with us.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button size="lg" className="bg-nest-primary hover:bg-nest-primary/90">
-                Browse Properties
+              <Button size="lg" className="bg-nest-primary hover:bg-nest-primary/90" asChild>
+                <Link to="/properties">Browse Properties</Link>
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-nest-accent">
-                Learn More
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-nest-accent" asChild>
+                <Link to="/about">Learn More</Link>
               </Button>
             </div>
           </div>
