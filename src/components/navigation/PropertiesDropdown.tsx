@@ -70,29 +70,27 @@ const PropertiesDropdown: React.FC<PropertiesDropdownProps> = ({
   // For desktop, use NavigationMenu like MyPropertiesDropdown
   return (
     <NavigationMenu className="p-0">
-      <NavigationMenuList>
+      <NavigationMenuList className="h-auto">
         <NavigationMenuItem>
-          <NavigationMenuTrigger className={`${linkClassName} bg-transparent hover:bg-transparent focus:bg-transparent`}>
+          <NavigationMenuTrigger className={`${linkClassName} bg-transparent hover:bg-transparent focus:bg-transparent p-0 h-auto`}>
             Properties
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-1 lg:w-[600px]">
               {menuItems.map((item) => (
                 <li key={item.path}>
-                  <NavigationMenuLink asChild>
-                    <Link
-                      to={item.path}
-                      className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                      onClick={() => {
-                        if (toggleMenu) toggleMenu();
-                      }}
-                    >
-                      <div className="text-sm font-medium leading-none">{item.title}</div>
-                      <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                        {item.description}
-                      </p>
-                    </Link>
-                  </NavigationMenuLink>
+                  <Link
+                    to={item.path}
+                    className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                    onClick={() => {
+                      if (toggleMenu) toggleMenu();
+                    }}
+                  >
+                    <div className="text-sm font-medium leading-none">{item.title}</div>
+                    <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                      {item.description}
+                    </p>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -101,19 +99,6 @@ const PropertiesDropdown: React.FC<PropertiesDropdownProps> = ({
       </NavigationMenuList>
     </NavigationMenu>
   );
-};
-
-interface NavigationMenuLinkProps {
-  asChild: boolean;
-  children: React.ReactNode;
-}
-
-// Create a NavigationMenuLink component to match the interface
-const NavigationMenuLink: React.FC<NavigationMenuLinkProps> = ({ asChild, children }) => {
-  if (asChild) {
-    return <>{children}</>;
-  }
-  return <div>{children}</div>;
 };
 
 export default PropertiesDropdown;
