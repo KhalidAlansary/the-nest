@@ -1,15 +1,17 @@
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 type User = {
   username: string;
+  isAdmin?: boolean;
 } | null;
 
 type AuthContextType = {
   user: User;
-  login: (user: { username: string }) => void;
+  login: (user: { username: string; isAdmin?: boolean }) => void;
   logout: () => void;
   isAuthenticated: boolean;
+  isAdmin: boolean;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -17,7 +19,20 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User>(null);
 
-  const login = (userData: { username: string }) => {
+  // On initial load, check if user data exists in localStorage
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (error) {
+        console.error('Failed to parse stored user data', error);
+        localStorage.removeItem('user');
+      }
+    }
+  }, []);
+
+  const login = (userData: { username: string; isAdmin?: boolean }) => {
     setUser(userData);
     // In a real app, you would store the user in localStorage or a secure cookie
     localStorage.setItem('user', JSON.stringify(userData));
@@ -33,6 +48,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     login,
     logout,
     isAuthenticated: !!user,
+    isAdmin: !!user?.isAdmin,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

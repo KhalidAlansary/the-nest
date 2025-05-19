@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, LogIn, User } from 'lucide-react';
@@ -7,7 +8,7 @@ import { toast } from 'sonner';
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, logout, isAuthenticated, isAdmin } = useAuth();
   const navigate = useNavigate();
 
   const toggleMenu = () => {
@@ -48,11 +49,19 @@ const Navigation = () => {
               Submit Property
             </Link>
             
+            {/* Admin link - only visible to admin users */}
+            {isAdmin && (
+              <Link to="/admin/properties" className="text-nest-dark hover:text-nest-primary font-medium transition-colors">
+                Admin
+              </Link>
+            )}
+            
             {isAuthenticated ? (
               <div className="flex items-center space-x-4">
                 <div className="flex items-center text-nest-dark">
                   <User size={18} className="mr-2" />
                   <span>{user?.username}</span>
+                  {isAdmin && <span className="ml-2 text-xs bg-nest-primary/20 text-nest-primary px-2 py-0.5 rounded">Admin</span>}
                 </div>
                 <Button 
                   onClick={handleLogout}
@@ -133,11 +142,23 @@ const Navigation = () => {
                 Submit Property
               </Link>
               
+              {/* Admin link - only visible to admin users */}
+              {isAdmin && (
+                <Link 
+                  to="/admin/properties" 
+                  className="py-2 text-nest-dark hover:text-nest-primary font-medium transition-colors"
+                  onClick={toggleMenu}
+                >
+                  Admin
+                </Link>
+              )}
+              
               {isAuthenticated ? (
                 <>
                   <div className="py-2 flex items-center text-nest-dark">
                     <User size={18} className="mr-2" />
                     <span>{user?.username}</span>
+                    {isAdmin && <span className="ml-2 text-xs bg-nest-primary/20 text-nest-primary px-2 py-0.5 rounded">Admin</span>}
                   </div>
                   <Button 
                     onClick={() => {
