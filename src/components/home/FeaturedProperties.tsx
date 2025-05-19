@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { MapPin, Bed, Bath, Calendar, Star } from 'lucide-react';
@@ -67,7 +66,7 @@ const FeaturedProperties = () => {
                   <MapPin size={16} className="text-nest-primary mr-1" />
                   <span className="text-gray-600 text-sm">{property.location}</span>
                   <div className="ml-auto flex items-center">
-                    <Star size={16} className="text-yellow-500 mr-1" filled />
+                    <Star size={16} className="text-yellow-500" fill="currentColor" />
                     <span className="text-gray-700 font-medium">{property.rating}</span>
                   </div>
                 </div>

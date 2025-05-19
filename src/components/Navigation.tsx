@@ -1,14 +1,24 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Menu, X, LogIn, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, logout, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleLogout = () => {
+    logout();
+    toast.success('Successfully logged out');
+    navigate('/');
   };
 
   return (
@@ -32,9 +42,29 @@ const Navigation = () => {
             <Link to="/contact" className="text-nest-dark hover:text-nest-primary font-medium transition-colors">
               Contact
             </Link>
-            <Button className="bg-nest-primary hover:bg-nest-primary/90">
-              Sign In
-            </Button>
+            
+            {isAuthenticated ? (
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center text-nest-dark">
+                  <User size={18} className="mr-2" />
+                  <span>{user?.username}</span>
+                </div>
+                <Button 
+                  onClick={handleLogout}
+                  variant="outline" 
+                  className="border-nest-primary text-nest-primary hover:bg-nest-primary/10"
+                >
+                  Logout
+                </Button>
+              </div>
+            ) : (
+              <Button 
+                onClick={() => navigate('/login')} 
+                className="bg-nest-primary hover:bg-nest-primary/90"
+              >
+                <LogIn size={18} className="mr-2" /> Sign In
+              </Button>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -74,9 +104,35 @@ const Navigation = () => {
               >
                 Contact
               </Link>
-              <Button className="bg-nest-primary hover:bg-nest-primary/90 w-full">
-                Sign In
-              </Button>
+              
+              {isAuthenticated ? (
+                <>
+                  <div className="py-2 flex items-center text-nest-dark">
+                    <User size={18} className="mr-2" />
+                    <span>{user?.username}</span>
+                  </div>
+                  <Button 
+                    onClick={() => {
+                      handleLogout();
+                      toggleMenu();
+                    }} 
+                    variant="outline" 
+                    className="border-nest-primary text-nest-primary hover:bg-nest-primary/10 w-full"
+                  >
+                    Logout
+                  </Button>
+                </>
+              ) : (
+                <Button 
+                  onClick={() => {
+                    navigate('/login');
+                    toggleMenu();
+                  }} 
+                  className="bg-nest-primary hover:bg-nest-primary/90 w-full"
+                >
+                  <LogIn size={18} className="mr-2" /> Sign In
+                </Button>
+              )}
             </div>
           </div>
         )}
