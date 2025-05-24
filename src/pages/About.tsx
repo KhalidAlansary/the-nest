@@ -52,8 +52,8 @@ const About = () => {
               <div>
                 <h2 className="text-3xl font-bold mb-4">Our Story</h2>
                 <p className="text-gray-700 mb-4">
-                  Founded in 2018, The Nest was born from a simple idea: finding a temporary place to stay 
-                  shouldn't be complicated or stressful. Our founder, Jessica Thompson, experienced firsthand 
+                  Founded in 2021, The Nest was born from a simple idea: finding a temporary place to stay
+                  shouldn't be complicated or stressful. Our founder, Youssif Hussein, experienced firsthand
                   the challenges of finding quality short-term accommodations while traveling for work.
                 </p>
                 <p className="text-gray-700 mb-4">
