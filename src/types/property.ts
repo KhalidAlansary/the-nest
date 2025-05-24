@@ -32,6 +32,7 @@ export const PROPERTY_CATEGORIES: { value: PropertyCategory; label: string; icon
 ];
 
 export interface Property {
+  _id: any;
   id: number;
   name: string;
   description: string;
@@ -40,7 +41,7 @@ export interface Property {
     name: string;
     avatar?: string;
   };
-  images: PropertyImage[];
+  images: string[];
   pricePerDay: number;
   pricePerWeek: number;
   pricePerMonth: number;

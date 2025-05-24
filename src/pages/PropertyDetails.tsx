@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
@@ -12,10 +12,29 @@ import BookingCalendar from '@/components/booking/BookingCalendar';
 const PropertyDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [property, setProperty] = useState<Property | null>(null);
+  const [loading, setLoading] = useState(true);
   const [selectedTab, setSelectedTab] = useState<'day' | 'week' | 'month'>('day');
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   
-  const property = properties.find(p => p.id === Number(id)) as Property;
+  useEffect(() => {
+    const fetchProperty = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/properties/${id}`);
+        if (!res.ok) throw new Error('Property not found');
+        const data = await res.json();
+        setProperty(data);
+      } catch (error) {
+        console.error(error);
+        setProperty(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchProperty();
+  }, [id]);
+  
   
   if (!property) {
     return (
@@ -97,12 +116,12 @@ const PropertyDetails = () => {
           <div className="mb-10">
             <Carousel className="w-full">
               <CarouselContent>
-                {property.images.map((image) => (
-                  <CarouselItem key={image.id}>
+                {property.images.map((image, index) => (
+                  <CarouselItem key={index}>
                     <div className="overflow-hidden rounded-lg">
                       <img
-                        src={image.url}
-                        alt={image.alt}
+                        src={`${import.meta.env.VITE_API_BASE_URL}/${image}`}
+                        alt={"Property Image"}
                         className="w-full h-auto md:h-[500px] object-cover"
                       />
                     </div>
