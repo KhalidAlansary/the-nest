@@ -5,27 +5,27 @@ import { Star, Quote } from 'lucide-react';
 const testimonials = [
   {
     id: 1,
-    name: 'Sarah Johnson',
+    name: 'Mohamed Sokkar',
     role: 'Business Traveler',
     comment: 'The Nest made finding a comfortable monthly rental for my work assignment so easy. The property was exactly as described and the host was incredibly responsive.',
     rating: 5,
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60'
+    image: 'mohammed_sokkar.jpg'
   },
   {
     id: 2,
-    name: 'Michael Rodriguez',
+    name: 'Mohammed Hassan',
     role: 'Vacation Renter',
     comment: 'We booked a weekly stay for our family vacation and couldn\'t have been happier. The booking process was seamless and the beachfront property exceeded our expectations.',
     rating: 5,
-    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjJ8fHByb2ZpbGV8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60'
+    image: 'mohamed_hassan.jpg'
   },
   {
     id: 3,
-    name: 'Emily Chen',
+    name: 'Mohammed Hisham',
     role: 'Weekend Getaway',
     comment: 'The daily rental option was perfect for our weekend getaway. The Nest provided an exceptional property with all the amenities we needed for a relaxing stay.',
     rating: 4,
-    image: 'https://images.unsplash.com/photo-1619895862022-09114b41f16f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjR8fHByb2ZpbGV8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60'
+    image: 'mohamed_hisham.jpg'
   }
 ];
 
