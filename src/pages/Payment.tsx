@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '@/components/Navigation';
@@ -11,6 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, CreditCard, Calendar, MapPin, Users } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
+import { useAuth } from "@/hooks/useAuth"; // adjust the path if needed
 
 interface BookingDetails {
   property: {
@@ -33,6 +33,7 @@ const Payment = () => {
   const [cvv, setCvv] = useState('');
   const [cardName, setCardName] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const { user } = useAuth();
 
   useEffect(() => {
     const storedBooking = localStorage.getItem('pendingBooking');
@@ -44,17 +45,41 @@ const Payment = () => {
     }
   }, [navigate]);
 
-  const handlePayment = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsProcessing(true);
+  const handlePayment = async () => {
+    if (!bookingDetails) return;
 
-    // Simulate payment processing
-    setTimeout(() => {
-      toast.success('Payment successful! Booking confirmed.');
-      localStorage.removeItem('pendingBooking');
+    setIsProcessing(true);
+    if (!user?.id) {
+      toast.error("User not logged in.");
+      return;
+    }
+
+    const userId = user.id;
+
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/bookings/paid`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          property: bookingDetails.property.id,
+          user: userId,
+          checkInDate: bookingDetails.checkInDate,
+          checkOutDate: bookingDetails.checkOutDate,
+          totalAmount: bookingDetails.totalAmount,
+        }),
+      });
+
+      if (!res.ok) throw new Error("Booking creation failed");
+
+      toast.success("Payment successful and booking confirmed!");
+      localStorage.removeItem("pendingBooking");
+      navigate("/my-bookings");
+    } catch (err) {
+      toast.error("Failed to confirm booking. Try again.");
+      console.error(err);
+    } finally {
       setIsProcessing(false);
-      navigate('/my-bookings');
-    }, 2000);
+    }
   };
 
   const formatCardNumber = (value: string) => {
@@ -237,6 +262,7 @@ const Payment = () => {
                       <Button 
                         type="submit" 
                         className="w-full bg-nest-primary hover:bg-nest-primary/90"
+                        onClick={handlePayment}
                         disabled={isProcessing}
                       >
                         {isProcessing ? 'Processing...' : `Pay L.E.${bookingDetails.totalAmount}`}

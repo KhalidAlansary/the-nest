@@ -38,8 +38,8 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Booking, ServiceRequestType } from '@/types/booking';
-import { bookings } from '@/data/bookings';
 import { Calendar, Home, Wrench, Brush, ShowerHead } from 'lucide-react';
+import { useEffect } from 'react';
 
 const MyBookings = () => {
   const { user } = useAuth();
@@ -48,9 +48,30 @@ const MyBookings = () => {
   const [serviceType, setServiceType] = useState<ServiceRequestType>('cleaning');
   const [serviceDescription, setServiceDescription] = useState('');
 
-  // In a real app, we would filter bookings by guest ID
-  // For demo purposes, we'll just show all bookings and pretend they belong to the current user
-  const myBookings = bookings;
+  const [myBookings, setMyBookings] = useState<Booking[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchBookings = async () => {
+      if (!user?.id) return;
+      const userId = user.id;
+
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/bookings/user/${userId}`);
+        if (!res.ok) throw new Error("Failed to fetch bookings");
+        const data = await res.json();
+        setMyBookings(data);
+      } catch (err) {
+        console.error("Error fetching bookings:", err);
+        toast.error("Could not load your bookings");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBookings();
+  }, [user]);
+
 
   const upcomingBookings = myBookings.filter(
     booking => booking.status === 'confirmed' && new Date(booking.checkInDate) > new Date()
