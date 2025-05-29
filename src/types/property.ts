@@ -1,4 +1,3 @@
-
 export interface PropertyFacility {
   id: number;
   name: string;
@@ -41,7 +40,7 @@ export interface Property {
     name: string;
     avatar?: string;
   };
-  images: string[];
+  images: PropertyImage[];
   pricePerDay: number;
   pricePerWeek: number;
   pricePerMonth: number;
