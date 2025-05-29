@@ -23,6 +23,7 @@ import MySubmissions from "./pages/MySubmissions";
 import Requests from "./pages/Requests";
 import FurnishRequest from "./pages/FurnishRequest";
 import AdminFurnishRequests from "./pages/AdminFurnishRequests";
+import Payment from "./pages/Payment";
 import NotFound from "./pages/NotFound";
 
 // Create a client
@@ -52,6 +53,7 @@ const App = () => {
               <Route path="/my-submissions" element={<ProtectedRoute><MySubmissions /></ProtectedRoute>} />
               <Route path="/requests" element={<ProtectedRoute><Requests /></ProtectedRoute>} />
               <Route path="/furnish-your-home" element={<FurnishRequest />} />
+              <Route path="/payment" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

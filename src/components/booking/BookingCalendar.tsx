@@ -8,7 +8,7 @@ import {
   isAfter,
   isSameDay
 } from "date-fns";
-import { Calendar } from "@/components/ui/calendar";
+import { Calendar, DateRange } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -21,6 +21,7 @@ import { Property } from "@/types/property";
 import { X } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 interface BookingCalendarProps {
   property: Property;
@@ -40,7 +41,8 @@ interface Booking {
 
 const BookingCalendar: React.FC<BookingCalendarProps> = ({ property, isOpen, onClose }) => {
   const { user } = useAuth();
-  const [dateRange, setDateRange] = useState<DateRangeType>({ from: undefined, to: undefined });
+  const navigate = useNavigate();
+  const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [bookedDates, setBookedDates] = useState<Booking[]>([]);
   const [summary, setSummary] = useState({ days: 0, weeks: 0, months: 0, total: 0 });
 
@@ -66,7 +68,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ property, isOpen, onC
   };
 
   useEffect(() => {
-    if (dateRange.from && dateRange.to) {
+    if (dateRange?.from && dateRange?.to) {
       const days = differenceInDays(dateRange.to, dateRange.from) + 1;
       const weeks = differenceInWeeks(dateRange.to, dateRange.from);
       const months = differenceInMonths(dateRange.to, dateRange.from);
@@ -87,38 +89,29 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ property, isOpen, onC
     }
   }, [dateRange, property]);
 
-  const submitBooking = async () => {
-    if (!dateRange.from || !dateRange.to || !user) {
+  const proceedToPayment = () => {
+    if (!dateRange?.from || !dateRange?.to || !user) {
       toast.error("You must be logged in to book.");
       return;
     }
 
+    // Store booking details in localStorage for the payment page
     const bookingData = {
-      property: property._id,
-      user: user.id,
+      property: {
+        id: property._id,
+        name: property.name,
+        location: property.location,
+        image: property.images?.[0]
+      },
       checkInDate: dateRange.from.toISOString(),
       checkOutDate: dateRange.to.toISOString(),
-      totalAmount: summary.total
+      totalAmount: summary.total,
+      days: summary.days
     };
 
-    try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/bookings`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(bookingData)
-      });
-
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.message || "Booking failed");
-      }
-
-      toast.success("Booking successful!");
-      onClose();
-    } catch (err: any) {
-      console.error("Booking error", err);
-      toast.error(err.message || "Booking failed.");
-    }
+    localStorage.setItem('pendingBooking', JSON.stringify(bookingData));
+    onClose();
+    navigate('/payment');
   };
 
   return (
@@ -146,7 +139,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ property, isOpen, onC
 
           <div>
             <h3 className="font-medium mb-3">Booking Summary</h3>
-            {dateRange.from && dateRange.to ? (
+            {dateRange?.from && dateRange?.to ? (
               <div className="space-y-4">
                 <div className="border rounded p-3">
                   <p>From: {format(dateRange.from, "PPP")}</p>
@@ -168,10 +161,10 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ property, isOpen, onC
             <Button variant="outline" onClick={onClose}>Cancel</Button>
             <Button
               className="bg-nest-primary hover:bg-nest-primary/90"
-              disabled={!dateRange.from || !dateRange.to || !user}
-              onClick={submitBooking}
+              disabled={!dateRange?.from || !dateRange?.to || !user}
+              onClick={proceedToPayment}
             >
-              Confirm Booking - L.E.{summary.total}
+              Book Now - L.E.{summary.total}
             </Button>
           </div>
         </DialogFooter>
