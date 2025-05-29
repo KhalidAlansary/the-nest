@@ -5,11 +5,13 @@ import { useAuth } from '@/hooks/useAuth';
 import MyPropertiesDropdown from './MyPropertiesDropdown';
 import { ChevronDown } from 'lucide-react';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 
 interface NavLinksProps {
   toggleMenu?: () => void;
@@ -38,33 +40,53 @@ const NavLinks: React.FC<NavLinksProps> = ({
       
       {/* Properties Dropdown */}
       {!isMobile ? (
-        <DropdownMenu>
-          <DropdownMenuTrigger className={`${linkClassName} flex items-center gap-1`}>
-            Properties <ChevronDown size={16} />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-56 bg-white">
-            <DropdownMenuItem asChild>
-              <Link
-                to="/properties"
-                className="w-full"
-                onClick={toggleMenu}
-              >
-                Browse Properties
-              </Link>
-            </DropdownMenuItem>
-            {isAuthenticated && (
-              <DropdownMenuItem asChild>
-                <Link
-                  to="/my-bookings"
-                  className="w-full"
-                  onClick={toggleMenu}
-                >
-                  My Bookings
-                </Link>
-              </DropdownMenuItem>
-            )}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <NavigationMenu className="p-0">
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger className={`${linkClassName} bg-transparent hover:bg-transparent focus:bg-transparent`}>
+                Properties
+              </NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-1 lg:w-[600px]">
+                  <li>
+                    <NavigationMenuLink asChild>
+                      <Link
+                        to="/properties"
+                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                        onClick={() => {
+                          if (toggleMenu) toggleMenu();
+                        }}
+                      >
+                        <div className="text-sm font-medium leading-none">Browse Properties</div>
+                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                          View our available properties
+                        </p>
+                      </Link>
+                    </NavigationMenuLink>
+                  </li>
+                  {isAuthenticated && (
+                    <li>
+                      <NavigationMenuLink asChild>
+                        <Link
+                          to="/my-bookings"
+                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                          onClick={() => {
+                            if (toggleMenu) toggleMenu();
+                          }}
+                        >
+                          <div className="text-sm font-medium leading-none">My Bookings</div>
+                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                            View your booking history
+                          </p>
+                        </Link>
+                      </NavigationMenuLink>
+                    </li>
+                  )}
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
       ) : (
         <div>
           <div 
