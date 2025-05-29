@@ -8,7 +8,8 @@ import {
   isAfter,
   isSameDay
 } from "date-fns";
-import { Calendar, DateRange } from "@/components/ui/calendar";
+import { Calendar } from "@/components/ui/calendar";
+import { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
