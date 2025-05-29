@@ -48,7 +48,7 @@ export interface Property {
     name: string;
     avatar?: string;
   };
-  images: PropertyImage[];
+  images: string[];
   pricePerDay: number;
   pricePerWeek: number;
   pricePerMonth: number;

@@ -42,11 +42,11 @@ const Contact = () => {
                     <div>
                       <h3 className="font-bold">Address</h3>
                       <p className="text-gray-600">
-                        123 Rental Street, Suite 101
+                        Fifth Settlement
                         <br />
-                        New York, NY 10001
+                        New Cairo
                         <br />
-                        United States
+                        Egypt
                       </p>
                     </div>
                   </div>
@@ -57,7 +57,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="font-bold">Phone</h3>
-                      <p className="text-gray-600">+1 (555) 123-4567</p>
+                      <p className="text-gray-600">+20 1067668951</p>
                     </div>
                   </div>
 
@@ -67,7 +67,9 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="font-bold">Email</h3>
-                      <p className="text-gray-600">info@thenest.com</p>
+                      <p className="text-gray-600">
+                        youssifhussein669@gmail.com
+                      </p>
                     </div>
                   </div>
 

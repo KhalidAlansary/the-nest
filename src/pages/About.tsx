@@ -7,27 +7,24 @@ const About = () => {
   const teamMembers = [
     {
       id: 1,
-      name: "Jessica Thompson",
-      role: "Founder & CEO",
-      bio: "With over 15 years in real estate, Jessica founded The Nest to revolutionize the rental experience.",
-      image:
-        "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8YnVzaW5lc3MlMjBwZXJzb258ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60",
+      name: "Osama Sherif",
+      role: "CTO",
+      bio: "Osama leads our tech team, ensuring The Nest platform delivers a seamless experience for hosts and guests alike.",
+      image: "osama_sherif.jpg",
     },
     {
       id: 2,
-      name: "David Chen",
-      role: "CTO",
-      bio: "David leads our tech team, ensuring The Nest platform delivers a seamless experience for hosts and guests alike.",
-      image:
-        "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8YnVzaW5lc3MlMjBwZXJzb258ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60",
+      name: "Youssif Hussein",
+      role: "Founder & CEO",
+      bio: "With over 5 years in real estate, Youssif founded The Nest to revolutionize the rental experience.",
+      image: "youssif_hussein.jpg",
     },
     {
       id: 3,
-      name: "Sophia Williams",
+      name: "Omar Sameh",
       role: "Head of Customer Experience",
-      bio: "Sophia ensures every guest and host receives exceptional support throughout their journey with The Nest.",
-      image:
-        "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGJ1c2luZXNzJTIwcGVyc29ufGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60",
+      bio: "Omar ensures every guest and host receives exceptional support throughout their journey with The Nest.",
+      image: "omar_sameh.jpg",
     },
   ];
 
@@ -57,11 +54,11 @@ const About = () => {
               <div>
                 <h2 className="text-3xl font-bold mb-4">Our Story</h2>
                 <p className="text-gray-700 mb-4">
-                  Founded in 2018, The Nest was born from a simple idea: finding
+                  Founded in 2021, The Nest was born from a simple idea: finding
                   a temporary place to stay shouldn't be complicated or
-                  stressful. Our founder, Jessica Thompson, experienced
-                  firsthand the challenges of finding quality short-term
-                  accommodations while traveling for work.
+                  stressful. Our founder, Youssif Hussein, experienced firsthand
+                  the challenges of finding quality short-term accommodations
+                  while traveling for work.
                 </p>
                 <p className="text-gray-700 mb-4">
                   What started as a small platform connecting travelers with
