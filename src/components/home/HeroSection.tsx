@@ -1,6 +1,5 @@
-
-import React from 'react';
-import SearchBar from '@/components/search/SearchBar';
+import React from "react";
+import SearchBar from "@/components/search/SearchBar";
 
 const HeroSection = () => {
   return (
@@ -10,9 +9,10 @@ const HeroSection = () => {
           Find Your Perfect <span className="text-nest-primary">Nest</span>
         </h1>
         <p className="text-lg md:text-xl mb-8 max-w-3xl mx-auto animate-slide-up">
-          Discover the perfect rental property for your daily, weekly, or monthly stay. Your comfort is our priority.
+          Discover the perfect rental property for your daily, weekly, or
+          monthly stay. Your comfort is our priority.
         </p>
-        
+
         <SearchBar className="max-w-4xl mx-auto animate-slide-up" />
       </div>
     </div>

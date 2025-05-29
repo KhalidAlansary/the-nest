@@ -1,7 +1,6 @@
-
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -17,32 +16,52 @@ interface MyPropertiesDropdownProps {
   isMobile?: boolean;
 }
 
-const MyPropertiesDropdown: React.FC<MyPropertiesDropdownProps> = ({ 
+const MyPropertiesDropdown: React.FC<MyPropertiesDropdownProps> = ({
   linkClassName,
   toggleMenu,
-  isMobile = false
+  isMobile = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const menuItems = [
-    { title: "Submit Property", path: "/submit-property", description: "Submit a new property for approval" },
-    { title: "My Submissions", path: "/my-submissions", description: "View your pending and approved property submissions" },
-    { title: "My Rentals", path: "/my-rentals", description: "Manage your rental properties" },
-    { title: "Requests", path: "/requests", description: "View maintenance and cleaning requests" },
+    {
+      title: "Submit Property",
+      path: "/submit-property",
+      description: "Submit a new property for approval",
+    },
+    {
+      title: "My Submissions",
+      path: "/my-submissions",
+      description: "View your pending and approved property submissions",
+    },
+    {
+      title: "My Rentals",
+      path: "/my-rentals",
+      description: "Manage your rental properties",
+    },
+    {
+      title: "Requests",
+      path: "/requests",
+      description: "View maintenance and cleaning requests",
+    },
   ];
 
   // For mobile, we need a different UI
   if (isMobile) {
     return (
       <div className="relative">
-        <button 
-          onClick={() => setIsOpen(!isOpen)} 
+        <button
+          onClick={() => setIsOpen(!isOpen)}
           className={`${linkClassName} flex items-center justify-between w-full`}
         >
           My Properties
-          {isOpen ? <ChevronUp size={16} className="ml-1" /> : <ChevronDown size={16} className="ml-1" />}
+          {isOpen ? (
+            <ChevronUp size={16} className="ml-1" />
+          ) : (
+            <ChevronDown size={16} className="ml-1" />
+          )}
         </button>
-        
+
         {isOpen && (
           <div className="pl-4 mt-2 space-y-2">
             {menuItems.map((item) => (
@@ -69,7 +88,9 @@ const MyPropertiesDropdown: React.FC<MyPropertiesDropdownProps> = ({
     <NavigationMenu className="p-0">
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger className={`${linkClassName} bg-transparent hover:bg-transparent focus:bg-transparent`}>
+          <NavigationMenuTrigger
+            className={`${linkClassName} bg-transparent hover:bg-transparent focus:bg-transparent`}
+          >
             My Properties
           </NavigationMenuTrigger>
           <NavigationMenuContent>
@@ -84,7 +105,9 @@ const MyPropertiesDropdown: React.FC<MyPropertiesDropdownProps> = ({
                         if (toggleMenu) toggleMenu();
                       }}
                     >
-                      <div className="text-sm font-medium leading-none">{item.title}</div>
+                      <div className="text-sm font-medium leading-none">
+                        {item.title}
+                      </div>
                       <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                         {item.description}
                       </p>

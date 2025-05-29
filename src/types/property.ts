@@ -1,4 +1,3 @@
-
 export interface PropertyFacility {
   id: number;
   name: string;
@@ -19,16 +18,24 @@ export interface BookedDate {
 export interface PropertyDocument {
   name: string;
   file: File;
-  type: 'lease' | 'id';
+  type: "lease" | "id";
 }
 
-export type PropertyCategory = 'families' | 'friends' | 'honeymoon' | 'work-from-home';
+export type PropertyCategory =
+  | "families"
+  | "friends"
+  | "honeymoon"
+  | "work-from-home";
 
-export const PROPERTY_CATEGORIES: { value: PropertyCategory; label: string; icon: string }[] = [
-  { value: 'families', label: 'Families', icon: 'users' },
-  { value: 'friends', label: 'Friends', icon: 'users' },
-  { value: 'honeymoon', label: 'Honeymoon', icon: 'heart' },
-  { value: 'work-from-home', label: 'Work From Home', icon: 'briefcase' }
+export const PROPERTY_CATEGORIES: {
+  value: PropertyCategory;
+  label: string;
+  icon: string;
+}[] = [
+  { value: "families", label: "Families", icon: "users" },
+  { value: "friends", label: "Friends", icon: "users" },
+  { value: "honeymoon", label: "Honeymoon", icon: "heart" },
+  { value: "work-from-home", label: "Work From Home", icon: "briefcase" },
 ];
 
 export interface Property {
@@ -91,7 +98,7 @@ export interface FurnishRequest {
   squareMeters: number;
   budget: number;
   notes: string;
-  status: 'pending' | 'contacted' | 'scheduled' | 'completed' | 'cancelled';
+  status: "pending" | "contacted" | "scheduled" | "completed" | "cancelled";
   submittedAt: Date;
 }
 

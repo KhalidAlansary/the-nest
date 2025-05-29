@@ -1,6 +1,5 @@
-
-import { Booking, ServiceRequest } from '@/types/booking';
-import { properties } from './properties';
+import { Booking, ServiceRequest } from "@/types/booking";
+import { properties } from "./properties";
 
 // Helper function to create dates
 const createDate = (year: number, month: number, day: number) => {
@@ -12,19 +11,20 @@ const serviceRequests: ServiceRequest[] = [
   {
     id: 1,
     bookingId: 1,
-    type: 'cleaning',
-    description: 'Would like the room to be cleaned today around 2pm if possible.',
-    status: 'completed',
-    createdAt: createDate(2025, 5, 26)
+    type: "cleaning",
+    description:
+      "Would like the room to be cleaned today around 2pm if possible.",
+    status: "completed",
+    createdAt: createDate(2025, 5, 26),
   },
   {
     id: 2,
     bookingId: 1,
-    type: 'maintenance',
-    description: 'The air conditioning isn\'t working properly.',
-    status: 'in-progress',
-    createdAt: createDate(2025, 5, 27)
-  }
+    type: "maintenance",
+    description: "The air conditioning isn't working properly.",
+    status: "in-progress",
+    createdAt: createDate(2025, 5, 27),
+  },
 ];
 
 // Sample bookings data
@@ -42,7 +42,7 @@ export const bookings: Booking[] = [
     status: "confirmed",
     createdAt: createDate(2025, 4, 15),
     paymentStatus: "paid",
-    serviceRequests: serviceRequests.filter(sr => sr.bookingId === 1)
+    serviceRequests: serviceRequests.filter((sr) => sr.bookingId === 1),
   },
   {
     id: 2,
@@ -56,7 +56,7 @@ export const bookings: Booking[] = [
     totalAmount: 750,
     status: "pending",
     createdAt: createDate(2025, 4, 20),
-    paymentStatus: "pending"
+    paymentStatus: "pending",
   },
   {
     id: 3,
@@ -70,7 +70,7 @@ export const bookings: Booking[] = [
     totalAmount: 360,
     status: "confirmed",
     createdAt: createDate(2025, 4, 10),
-    paymentStatus: "paid"
+    paymentStatus: "paid",
   },
   {
     id: 4,
@@ -84,6 +84,6 @@ export const bookings: Booking[] = [
     totalAmount: 1000,
     status: "confirmed",
     createdAt: createDate(2025, 4, 22),
-    paymentStatus: "paid"
-  }
+    paymentStatus: "paid",
+  },
 ];

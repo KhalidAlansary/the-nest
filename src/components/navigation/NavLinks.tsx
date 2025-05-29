@@ -1,9 +1,8 @@
-
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
-import MyPropertiesDropdown from './MyPropertiesDropdown';
-import { ChevronDown } from 'lucide-react';
+import React from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import MyPropertiesDropdown from "./MyPropertiesDropdown";
+import { ChevronDown } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,30 +17,22 @@ interface NavLinksProps {
   isMobile?: boolean;
 }
 
-const NavLinks: React.FC<NavLinksProps> = ({ 
-  toggleMenu, 
-  className = '', 
-  linkClassName = 'text-nest-dark hover:text-nest-primary font-medium transition-colors',
-  isMobile = false
+const NavLinks: React.FC<NavLinksProps> = ({
+  toggleMenu,
+  className = "",
+  linkClassName = "text-nest-dark hover:text-nest-primary font-medium transition-colors",
+  isMobile = false,
 }) => {
   const { isAdmin, isAuthenticated } = useAuth();
-  
+
   return (
     <div className={`${className} items-center gap-5`}>
-      <Link 
-        to="/" 
-        className={linkClassName}
-        onClick={toggleMenu}
-      >
+      <Link to="/" className={linkClassName} onClick={toggleMenu}>
         Home
       </Link>
-      
+
       {/* Properties Link */}
-      <Link 
-        to="/properties" 
-        className={linkClassName}
-        onClick={toggleMenu}
-      >
+      <Link to="/properties" className={linkClassName} onClick={toggleMenu}>
         Browse Properties
       </Link>
 
@@ -59,7 +50,9 @@ const NavLinks: React.FC<NavLinksProps> = ({
         <>
           {!isMobile ? (
             <DropdownMenu>
-              <DropdownMenuTrigger className={`${linkClassName} flex items-center gap-1`}>
+              <DropdownMenuTrigger
+                className={`${linkClassName} flex items-center gap-1`}
+              >
                 Admin <ChevronDown size={16} />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-56 bg-white">
@@ -85,7 +78,7 @@ const NavLinks: React.FC<NavLinksProps> = ({
             </DropdownMenu>
           ) : (
             <div>
-              <div 
+              <div
                 className={`${linkClassName} flex items-center cursor-pointer`}
                 role="button"
                 tabIndex={0}
@@ -113,27 +106,19 @@ const NavLinks: React.FC<NavLinksProps> = ({
         </>
       )}
 
-      <Link 
-        to="/furnish-your-home" 
+      <Link
+        to="/furnish-your-home"
         className={linkClassName}
         onClick={toggleMenu}
       >
         Furnish Your Nest
       </Link>
-      
-      <Link 
-        to="/about" 
-        className={linkClassName}
-        onClick={toggleMenu}
-      >
+
+      <Link to="/about" className={linkClassName} onClick={toggleMenu}>
         About Us
       </Link>
-      
-      <Link 
-        to="/contact" 
-        className={linkClassName}
-        onClick={toggleMenu}
-      >
+
+      <Link to="/contact" className={linkClassName} onClick={toggleMenu}>
         Contact
       </Link>
     </div>

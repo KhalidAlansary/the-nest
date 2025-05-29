@@ -1,7 +1,6 @@
-
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -23,29 +22,61 @@ const PropertiesDropdown: React.FC<PropertiesDropdownProps> = ({
   toggleMenu,
   isAuthenticated,
   isAdmin,
-  isMobile = false
+  isMobile = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const menuItems = [
-    { title: "Browse Properties", path: "/properties", description: "View our available properties" },
-    ...(isAuthenticated || isAdmin ? [{ title: "Submit Property", path: "/submit-property", description: "Submit a new property listing" }] : []),
-    ...(isAuthenticated ? [{ title: "My Rentals", path: "/my-rentals", description: "Manage your rental properties" }] : []),
-    ...(isAdmin ? [{ title: "Approve Properties", path: "/admin/properties", description: "Review and approve property submissions" }] : [])
+    {
+      title: "Browse Properties",
+      path: "/properties",
+      description: "View our available properties",
+    },
+    ...(isAuthenticated || isAdmin
+      ? [
+          {
+            title: "Submit Property",
+            path: "/submit-property",
+            description: "Submit a new property listing",
+          },
+        ]
+      : []),
+    ...(isAuthenticated
+      ? [
+          {
+            title: "My Rentals",
+            path: "/my-rentals",
+            description: "Manage your rental properties",
+          },
+        ]
+      : []),
+    ...(isAdmin
+      ? [
+          {
+            title: "Approve Properties",
+            path: "/admin/properties",
+            description: "Review and approve property submissions",
+          },
+        ]
+      : []),
   ];
 
   // For mobile, we need a different UI
   if (isMobile) {
     return (
       <div className="relative">
-        <button 
-          onClick={() => setIsOpen(!isOpen)} 
+        <button
+          onClick={() => setIsOpen(!isOpen)}
           className={`${linkClassName} flex items-center justify-between w-full`}
         >
           Properties
-          {isOpen ? <ChevronUp size={16} className="ml-1" /> : <ChevronDown size={16} className="ml-1" />}
+          {isOpen ? (
+            <ChevronUp size={16} className="ml-1" />
+          ) : (
+            <ChevronDown size={16} className="ml-1" />
+          )}
         </button>
-        
+
         {isOpen && (
           <div className="pl-4 mt-2 space-y-2">
             {menuItems.map((item) => (
@@ -72,7 +103,9 @@ const PropertiesDropdown: React.FC<PropertiesDropdownProps> = ({
     <NavigationMenu className="p-0">
       <NavigationMenuList className="h-auto">
         <NavigationMenuItem>
-          <NavigationMenuTrigger className={`${linkClassName} bg-transparent hover:bg-transparent focus:bg-transparent p-0 h-auto`}>
+          <NavigationMenuTrigger
+            className={`${linkClassName} bg-transparent hover:bg-transparent focus:bg-transparent p-0 h-auto`}
+          >
             Properties
           </NavigationMenuTrigger>
           <NavigationMenuContent>
@@ -86,7 +119,9 @@ const PropertiesDropdown: React.FC<PropertiesDropdownProps> = ({
                       if (toggleMenu) toggleMenu();
                     }}
                   >
-                    <div className="text-sm font-medium leading-none">{item.title}</div>
+                    <div className="text-sm font-medium leading-none">
+                      {item.title}
+                    </div>
                     <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                       {item.description}
                     </p>
