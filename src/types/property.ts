@@ -1,3 +1,4 @@
+
 export interface PropertyFacility {
   id: number;
   name: string;
@@ -31,7 +32,7 @@ export const PROPERTY_CATEGORIES: { value: PropertyCategory; label: string; icon
 ];
 
 export interface Property {
-  _id: any;
+  _id?: any; // Make _id optional instead of required
   id: number;
   name: string;
   description: string;
