@@ -83,6 +83,13 @@
     min-height: 85vh;
   }
 
+  .auth-section {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1464082354059-27db6ce50048?q=80&w=1920');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+  }
+
   .section-padding {
     @apply py-16 px-4 md:py-20 md:px-8 lg:py-24 lg:px-12;
   }

@@ -1,3 +1,4 @@
+
 // Full Signup component with backend integration
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -51,7 +52,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col auth-section">
       <Navigation />
       
       <main className="flex-grow flex items-center justify-center section-padding">
