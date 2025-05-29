@@ -18,36 +18,31 @@ const Properties = () => {
   
   // Filter properties based on search params
   useEffect(() => {
-    const location = searchParams.get('location');
-    const duration = searchParams.get('duration');
-    const minPrice = parseInt(searchParams.get('minPrice') || '0');
-    const maxPrice = parseInt(searchParams.get('maxPrice') || '5000');
-    const categoriesParam = searchParams.get('categories');
-    const categories = categoriesParam ? categoriesParam.split(',') : [];
-    
-    const filtered = properties.filter(property => {
-      // Filter by location if specified
-      if (location && location !== '' && property.location.toLowerCase().indexOf(location.toLowerCase()) === -1) {
-        return false;
+    const fetchFilteredProperties = async () => {
+      const location = searchParams.get('location');
+      const minPrice = searchParams.get('minPrice') || '0';
+      const maxPrice = searchParams.get('maxPrice') || '999999';
+      const categories = searchParams.get('categories');
+      const duration = searchParams.get('duration') || 'daily';
+  
+      const query = new URLSearchParams();
+      if (location) query.append('location', location);
+      if (minPrice) query.append('minPrice', minPrice);
+      if (maxPrice) query.append('maxPrice', maxPrice);
+      if (categories) query.append('categories', categories);
+      if (duration) query.append('duration', duration);
+  
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/properties?${query.toString()}`);
+        if (!res.ok) throw new Error('Failed to fetch properties');
+        const data = await res.json();
+        setFilteredProperties(data);
+      } catch (err) {
+        console.error(err);
       }
-      
-      // Filter by price range
-      if (property.pricePerDay < minPrice || property.pricePerDay > maxPrice) {
-        return false;
-      }
-      
-      // Filter by categories if specified
-      if (categories.length > 0) {
-        const hasMatchingCategory = categories.some(category => 
-          property.categories.includes(category as any)
-        );
-        if (!hasMatchingCategory) return false;
-      }
-      
-      return true;
-    });
-    
-    setFilteredProperties(filtered);
+    };
+  
+    fetchFilteredProperties();
   }, [searchParams]);
   
   return (
@@ -68,16 +63,16 @@ const Properties = () => {
             {filteredProperties.length > 0 ? (
               filteredProperties.map((property) => (
                 <Link 
-                  to={`/properties/${property.id}`} 
-                  key={property.id}
+                  to={`/properties/${property._id}`} 
+                  key={property._id}
                   className="property-card focus:outline-none focus:ring-2 focus:ring-nest-primary focus:ring-offset-2 rounded-lg"
                 >
                   <Card className="h-full flex flex-col">
                     <div className="overflow-hidden rounded-t-lg">
                       <AspectRatio ratio={16 / 9}>
                         <img
-                          src={property.images[0].url}
-                          alt={property.images[0].alt}
+                          src={`${import.meta.env.VITE_API_BASE_URL}/${property.images[0]}`}
+                          alt={"Propety Image"}
                           className="object-cover w-full h-full transition-all hover:scale-105 duration-300"
                         />
                       </AspectRatio>
@@ -133,8 +128,7 @@ const Properties = () => {
                     <CardFooter className="pt-2 border-t">
                       <div className="w-full flex justify-between items-center">
                         <div className="flex items-center text-nest-primary font-bold">
-                          <DollarSign size={18} />
-                          <span className="text-xl">{property.pricePerDay}</span>
+                          <span className="text-xl">L.E.{property.pricePerDay}</span>
                           <span className="text-sm text-gray-500 font-normal ml-1">/ night</span>
                         </div>
                         <Button size="sm" className="bg-nest-primary hover:bg-nest-primary/90">

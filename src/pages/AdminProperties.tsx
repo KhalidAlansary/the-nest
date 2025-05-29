@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 import { Check, X, FileText, User } from 'lucide-react';
@@ -34,33 +34,75 @@ import { propertySubmissions } from '@/data/propertySubmissions';
 import { properties } from '@/data/properties';
 
 const AdminProperties = () => {
-  const [submissions, setSubmissions] = useState(propertySubmissions);
-  const [selectedSubmission, setSelectedSubmission] = useState<typeof propertySubmissions[0] | null>(null);
+  const [submissions, setSubmissions] = useState([]);
+  const [selectedSubmission, setSelectedSubmission] = useState<any>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [reviewNote, setReviewNote] = useState('');
 
+  useEffect(() => {
+    const fetchSubmissions = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/properties/admin`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+  
+        if (!res.ok) {
+          throw new Error('Failed to fetch property submissions');
+        }
+  
+        const data = await res.json();
+        setSubmissions(data);
+      } catch (err) {
+        console.error(err);
+        toast.error('Could not load property submissions.');
+      }
+    };
+  
+    fetchSubmissions();
+  }, []);
+
   // Function to handle property approval/rejection
-  const handleApprovalAction = (id: number, action: ApprovalStatus) => {
-    // Update the local state
-    setSubmissions(prevSubmissions => 
-      prevSubmissions.map(submission => 
-        submission.id === id 
-          ? { ...submission, status: action, reviewNotes: reviewNote }
-          : submission
-      )
-    );
-
-    // In a real app, you would make an API call to update the status in the database
-    // For now, just simulate with a toast notification
-    toast.success(`Property ${action === 'approved' ? 'approved' : 'rejected'} successfully`, {
-      description: `Property ID: ${id}`
-    });
-
-    // Close the dialog
-    setIsDetailsOpen(false);
-    setSelectedSubmission(null);
-    setReviewNote('');
+  const handleApprovalAction = async (id, action) => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/properties/review/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({
+          status: action,
+          reviewNotes: reviewNote,
+        }),
+      });
+  
+      if (!res.ok) {
+        throw new Error('Failed to update property status');
+      }
+  
+      const updatedProperty = await res.json();
+  
+      setSubmissions(prev =>
+        prev.map(sub =>
+          sub._id === id ? updatedProperty : sub
+        )
+      );
+  
+      toast.success(`Property ${action} successfully`, {
+        description: `Property ID: ${id}`,
+      });
+  
+      setIsDetailsOpen(false);
+      setSelectedSubmission(null);
+      setReviewNote('');
+    } catch (err) {
+      console.error(err);
+      toast.error('Error updating property status.');
+    }
   };
+  
 
   // Function to view submission details
   const viewDetails = (submission: typeof propertySubmissions[0]) => {
@@ -134,7 +176,7 @@ const AdminProperties = () => {
                               onClick={() => {
                                 setSelectedSubmission(submission);
                                 setReviewNote('');
-                                handleApprovalAction(submission.id, 'approved');
+                                handleApprovalAction(submission._id, 'approved');
                               }} 
                               variant="outline" 
                               size="sm"
@@ -196,8 +238,8 @@ const AdminProperties = () => {
                       <div key={index} className="overflow-hidden rounded-md">
                         <AspectRatio ratio={16 / 9}>
                           <img
-                            src={image.url}
-                            alt={image.alt || `Property image ${index + 1}`}
+                            src={`${import.meta.env.VITE_API_BASE_URL}/${image}`}
+                            alt={`Property image ${index + 1}`}
                             className="object-cover w-full h-full"
                           />
                         </AspectRatio>
@@ -349,14 +391,14 @@ const AdminProperties = () => {
                 <>
                   <Button 
                     className="bg-green-600 hover:bg-green-700"
-                    onClick={() => handleApprovalAction(selectedSubmission.id, 'approved')}
+                    onClick={() => handleApprovalAction(selectedSubmission._id, 'approved')}
                   >
                     <Check className="h-4 w-4 mr-1" /> Approve
                   </Button>
                   
                   <Button 
                     variant="destructive"
-                    onClick={() => handleApprovalAction(selectedSubmission.id, 'rejected')}
+                    onClick={() => handleApprovalAction(selectedSubmission._id, 'rejected')}
                   >
                     <X className="h-4 w-4 mr-1" /> Reject
                   </Button>

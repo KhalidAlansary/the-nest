@@ -33,6 +33,7 @@ const Login = () => {
       }
 
       localStorage.setItem('token', data.token);
+      console.log(data.user);
       login(data.user); // user contains role
       toast.success('Successfully logged in!');
       navigate('/');
