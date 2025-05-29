@@ -1,4 +1,3 @@
-
 import { FurnishRequest } from "@/types/property";
 
 export const furnishRequests: FurnishRequest[] = [
@@ -14,9 +13,10 @@ export const furnishRequests: FurnishRequest[] = [
     propertyType: "Apartment",
     squareMeters: 85,
     budget: 5000,
-    notes: "Looking for modern furniture for my new apartment. Preferably in neutral colors.",
+    notes:
+      "Looking for modern furniture for my new apartment. Preferably in neutral colors.",
     status: "pending",
-    submittedAt: new Date("2025-05-15")
+    submittedAt: new Date("2025-05-15"),
   },
   {
     id: 2,
@@ -30,9 +30,10 @@ export const furnishRequests: FurnishRequest[] = [
     propertyType: "House",
     squareMeters: 150,
     budget: 8500,
-    notes: "Need to furnish my entire 3-bedroom house. Looking for quality, durable furniture.",
+    notes:
+      "Need to furnish my entire 3-bedroom house. Looking for quality, durable furniture.",
     status: "contacted",
-    submittedAt: new Date("2025-05-12")
+    submittedAt: new Date("2025-05-12"),
   },
   {
     id: 3,
@@ -46,8 +47,9 @@ export const furnishRequests: FurnishRequest[] = [
     propertyType: "Studio",
     squareMeters: 50,
     budget: 3000,
-    notes: "Need compact, multi-functional furniture for my small studio apartment.",
+    notes:
+      "Need compact, multi-functional furniture for my small studio apartment.",
     status: "scheduled",
-    submittedAt: new Date("2025-05-10")
-  }
+    submittedAt: new Date("2025-05-10"),
+  },
 ];

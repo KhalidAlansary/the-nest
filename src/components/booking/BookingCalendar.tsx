@@ -6,7 +6,7 @@ import {
   differenceInMonths,
   isBefore,
   isAfter,
-  isSameDay
+  isSameDay,
 } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { DateRange } from "react-day-picker";
@@ -16,7 +16,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogFooter
+  DialogFooter,
 } from "@/components/ui/dialog";
 import { Property } from "@/types/property";
 import { X } from "lucide-react";
@@ -40,17 +40,28 @@ interface Booking {
   checkOutDate: string;
 }
 
-const BookingCalendar: React.FC<BookingCalendarProps> = ({ property, isOpen, onClose }) => {
+const BookingCalendar: React.FC<BookingCalendarProps> = ({
+  property,
+  isOpen,
+  onClose,
+}) => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [bookedDates, setBookedDates] = useState<Booking[]>([]);
-  const [summary, setSummary] = useState({ days: 0, weeks: 0, months: 0, total: 0 });
+  const [summary, setSummary] = useState({
+    days: 0,
+    weeks: 0,
+    months: 0,
+    total: 0,
+  });
 
   useEffect(() => {
     const fetchBookedDates = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/bookings/${property._id}`);
+        const res = await fetch(
+          `${import.meta.env.VITE_API_BASE_URL}/api/bookings/${property._id}`,
+        );
         const data = await res.json();
         setBookedDates(data);
       } catch (err) {
@@ -64,7 +75,10 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ property, isOpen, onC
     return bookedDates.some(({ checkInDate, checkOutDate }) => {
       const start = new Date(checkInDate);
       const end = new Date(checkOutDate);
-      return (isSameDay(date, start) || isAfter(date, start)) && (isSameDay(date, end) || isBefore(date, end));
+      return (
+        (isSameDay(date, start) || isAfter(date, start)) &&
+        (isSameDay(date, end) || isBefore(date, end))
+      );
     });
   };
 
@@ -76,9 +90,13 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ property, isOpen, onC
 
       let total = 0;
       if (months >= 1) {
-        total = months * property.pricePerMonth + (days - months * 30) * property.pricePerDay;
+        total =
+          months * property.pricePerMonth +
+          (days - months * 30) * property.pricePerDay;
       } else if (weeks >= 1) {
-        total = weeks * property.pricePerWeek + (days - weeks * 7) * property.pricePerDay;
+        total =
+          weeks * property.pricePerWeek +
+          (days - weeks * 7) * property.pricePerDay;
       } else {
         total = days * property.pricePerDay;
       }
@@ -102,17 +120,17 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ property, isOpen, onC
         id: property._id,
         name: property.name,
         location: property.location,
-        image: property.images?.[0]
+        image: property.images?.[0],
       },
       checkInDate: dateRange.from.toISOString(),
       checkOutDate: dateRange.to.toISOString(),
       totalAmount: summary.total,
-      days: summary.days
+      days: summary.days,
     };
 
-    localStorage.setItem('pendingBooking', JSON.stringify(bookingData));
+    localStorage.setItem("pendingBooking", JSON.stringify(bookingData));
     onClose();
-    navigate('/payment');
+    navigate("/payment");
   };
 
   return (
@@ -120,7 +138,12 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ property, isOpen, onC
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>Book Your Stay</DialogTitle>
-          <Button variant="ghost" size="icon" className="absolute right-4 top-4" onClick={onClose}>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute right-4 top-4"
+            onClick={onClose}
+          >
             <X className="h-4 w-4" />
           </Button>
         </DialogHeader>
@@ -132,7 +155,9 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ property, isOpen, onC
               mode="range"
               selected={dateRange}
               onSelect={setDateRange}
-              disabled={date => isBefore(date, new Date()) || isDateBooked(date)}
+              disabled={(date) =>
+                isBefore(date, new Date()) || isDateBooked(date)
+              }
               className="rounded-md border"
               numberOfMonths={1}
             />
@@ -148,18 +173,24 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ property, isOpen, onC
                   <p>Duration: {summary.days} days</p>
                 </div>
                 <div className="border rounded p-3">
-                  <p>Total Price: <strong>L.E.{summary.total}</strong></p>
+                  <p>
+                    Total Price: <strong>L.E.{summary.total}</strong>
+                  </p>
                 </div>
               </div>
             ) : (
-              <p className="text-gray-500 border p-3 text-center rounded">Please select a date range.</p>
+              <p className="text-gray-500 border p-3 text-center rounded">
+                Please select a date range.
+              </p>
             )}
           </div>
         </div>
 
         <DialogFooter>
           <div className="flex justify-between w-full">
-            <Button variant="outline" onClick={onClose}>Cancel</Button>
+            <Button variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
             <Button
               className="bg-nest-primary hover:bg-nest-primary/90"
               disabled={!dateRange?.from || !dateRange?.to || !user}

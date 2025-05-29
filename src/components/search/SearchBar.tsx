@@ -1,6 +1,5 @@
-
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Search, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,26 +18,30 @@ interface SearchBarProps {
 const SearchBar = ({ className = "" }: SearchBarProps) => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  
+
   // Initialize state from URL or with defaults
-  const [location, setLocation] = useState(searchParams.get('location') || '');
-  const [duration, setDuration] = useState(searchParams.get('duration') || '');
-  
-  const [minPrice, setMinPrice] = useState(searchParams.get('minPrice') || '0');
-  const [maxPrice, setMaxPrice] = useState(searchParams.get('maxPrice') || '5000');
-  
-  // Initialize categories from URL
-  const initialCategories = searchParams.get('categories')?.split(',') || [];
-  const [selectedCategories, setSelectedCategories] = useState<PropertyCategory[]>(
-    initialCategories.filter((cat): cat is PropertyCategory => 
-      PROPERTY_CATEGORIES.some(c => c.value === cat)
-    )
+  const [location, setLocation] = useState(searchParams.get("location") || "");
+  const [duration, setDuration] = useState(searchParams.get("duration") || "");
+
+  const [minPrice, setMinPrice] = useState(searchParams.get("minPrice") || "0");
+  const [maxPrice, setMaxPrice] = useState(
+    searchParams.get("maxPrice") || "5000",
   );
-  
+
+  // Initialize categories from URL
+  const initialCategories = searchParams.get("categories")?.split(",") || [];
+  const [selectedCategories, setSelectedCategories] = useState<
+    PropertyCategory[]
+  >(
+    initialCategories.filter((cat): cat is PropertyCategory =>
+      PROPERTY_CATEGORIES.some((c) => c.value === cat),
+    ),
+  );
+
   const handleSearch = () => {
     navigate({
       pathname: "/properties",
-      search: `?location=${location}&duration=${duration}&minPrice=${minPrice}&maxPrice=${maxPrice}${selectedCategories.length > 0 ? `&categories=${selectedCategories.join(',')}` : ''}`
+      search: `?location=${location}&duration=${duration}&minPrice=${minPrice}&maxPrice=${maxPrice}${selectedCategories.length > 0 ? `&categories=${selectedCategories.join(",")}` : ""}`,
     });
   };
 
@@ -49,21 +52,21 @@ const SearchBar = ({ className = "" }: SearchBarProps) => {
   const handleMaxPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMaxPrice(e.target.value);
   };
-  
+
   const toggleCategory = (category: PropertyCategory) => {
-    setSelectedCategories(prev => 
-      prev.includes(category) 
-        ? prev.filter(c => c !== category) 
-        : [...prev, category]
+    setSelectedCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category],
     );
   };
-  
+
   return (
     <div className={`bg-white/90 p-4 md:p-6 rounded-lg shadow-lg ${className}`}>
       <div className="flex flex-col md:flex-row gap-4">
         <div className="flex-1">
-          <select 
-            className="w-full px-4 py-2.5 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-nest-primary text-gray-700 placeholder-gray-500" 
+          <select
+            className="w-full px-4 py-2.5 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-nest-primary text-gray-700 placeholder-gray-500"
             aria-label="Select location"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
@@ -79,8 +82,8 @@ const SearchBar = ({ className = "" }: SearchBarProps) => {
           </select>
         </div>
         <div className="flex-1">
-          <select 
-            className="w-full px-4 py-2.5 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-nest-primary text-gray-700 placeholder-gray-500" 
+          <select
+            className="w-full px-4 py-2.5 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-nest-primary text-gray-700 placeholder-gray-500"
             aria-label="Select rental duration"
             value={duration}
             onChange={(e) => setDuration(e.target.value)}
@@ -122,7 +125,10 @@ const SearchBar = ({ className = "" }: SearchBarProps) => {
         <div className="flex-1 flex items-center gap-2">
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="outline" className="flex-1 text-gray-700 hover:text-gray-900 border-gray-300 hover:bg-gray-100">
+              <Button
+                variant="outline"
+                className="flex-1 text-gray-700 hover:text-gray-900 border-gray-300 hover:bg-gray-100"
+              >
                 <Tag className="mr-2 h-4 w-4" />
                 <span>Categories</span>
                 {selectedCategories.length > 0 && (
@@ -134,19 +140,24 @@ const SearchBar = ({ className = "" }: SearchBarProps) => {
             </PopoverTrigger>
             <PopoverContent className="w-56 p-3" align="start">
               <div className="space-y-2">
-                <h4 className="font-medium leading-none text-gray-900">Property Type</h4>
+                <h4 className="font-medium leading-none text-gray-900">
+                  Property Type
+                </h4>
                 <p className="text-sm text-gray-700">
                   Select property categories
                 </p>
                 <div className="space-y-2 pt-2">
-                  {PROPERTY_CATEGORIES.map(category => (
-                    <div key={category.value} className="flex items-center space-x-2">
-                      <Checkbox 
+                  {PROPERTY_CATEGORIES.map((category) => (
+                    <div
+                      key={category.value}
+                      className="flex items-center space-x-2"
+                    >
+                      <Checkbox
                         id={`category-${category.value}`}
                         checked={selectedCategories.includes(category.value)}
                         onCheckedChange={() => toggleCategory(category.value)}
                       />
-                      <label 
+                      <label
                         htmlFor={`category-${category.value}`}
                         className="text-sm font-medium leading-none text-gray-800 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                       >
@@ -158,7 +169,7 @@ const SearchBar = ({ className = "" }: SearchBarProps) => {
               </div>
             </PopoverContent>
           </Popover>
-          <Button 
+          <Button
             className="bg-nest-primary hover:bg-nest-primary/90"
             onClick={handleSearch}
           >

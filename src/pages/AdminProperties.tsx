@@ -1,12 +1,11 @@
-
-import React, { useState, useEffect } from 'react';
-import { format } from 'date-fns';
-import { toast } from 'sonner';
-import { Check, X, FileText, User } from 'lucide-react';
-import Navigation from '@/components/Navigation';
-import Footer from '@/components/Footer';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import React, { useState, useEffect } from "react";
+import { format } from "date-fns";
+import { toast } from "sonner";
+import { Check, X, FileText, User } from "lucide-react";
+import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -15,7 +14,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from "@/components/ui/table";
 import {
   Dialog,
   DialogContent,
@@ -23,89 +22,92 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { AspectRatio } from '@/components/ui/aspect-ratio';
-import { Card, CardContent } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { ApprovalStatus } from '@/types/propertySubmission';
-import { propertySubmissions } from '@/data/propertySubmissions';
-import { properties } from '@/data/properties';
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Card, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { ApprovalStatus } from "@/types/propertySubmission";
+import { propertySubmissions } from "@/data/propertySubmissions";
+import { properties } from "@/data/properties";
 
 const AdminProperties = () => {
   const [submissions, setSubmissions] = useState([]);
   const [selectedSubmission, setSelectedSubmission] = useState<any>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-  const [reviewNote, setReviewNote] = useState('');
+  const [reviewNote, setReviewNote] = useState("");
 
   useEffect(() => {
     const fetchSubmissions = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/properties/admin`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+        const res = await fetch(
+          `${import.meta.env.VITE_API_BASE_URL}/api/properties/admin`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           },
-        });
-  
+        );
+
         if (!res.ok) {
-          throw new Error('Failed to fetch property submissions');
+          throw new Error("Failed to fetch property submissions");
         }
-  
+
         const data = await res.json();
         setSubmissions(data);
       } catch (err) {
         console.error(err);
-        toast.error('Could not load property submissions.');
+        toast.error("Could not load property submissions.");
       }
     };
-  
+
     fetchSubmissions();
   }, []);
 
   // Function to handle property approval/rejection
   const handleApprovalAction = async (id, action) => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/properties/review/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/api/properties/review/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            status: action,
+            reviewNotes: reviewNote,
+          }),
         },
-        body: JSON.stringify({
-          status: action,
-          reviewNotes: reviewNote,
-        }),
-      });
-  
-      if (!res.ok) {
-        throw new Error('Failed to update property status');
-      }
-  
-      const updatedProperty = await res.json();
-  
-      setSubmissions(prev =>
-        prev.map(sub =>
-          sub._id === id ? updatedProperty : sub
-        )
       );
-  
+
+      if (!res.ok) {
+        throw new Error("Failed to update property status");
+      }
+
+      const updatedProperty = await res.json();
+
+      setSubmissions((prev) =>
+        prev.map((sub) => (sub._id === id ? updatedProperty : sub)),
+      );
+
       toast.success(`Property ${action} successfully`, {
         description: `Property ID: ${id}`,
       });
-  
+
       setIsDetailsOpen(false);
       setSelectedSubmission(null);
-      setReviewNote('');
+      setReviewNote("");
     } catch (err) {
       console.error(err);
-      toast.error('Error updating property status.');
+      toast.error("Error updating property status.");
     }
   };
-  
 
   // Function to view submission details
-  const viewDetails = (submission: typeof propertySubmissions[0]) => {
+  const viewDetails = (submission: (typeof propertySubmissions)[0]) => {
     setSelectedSubmission(submission);
     setIsDetailsOpen(true);
   };
@@ -113,11 +115,11 @@ const AdminProperties = () => {
   // Get status badge color
   const getStatusBadge = (status: ApprovalStatus) => {
     switch (status) {
-      case 'approved':
+      case "approved":
         return <Badge className="bg-green-500">Approved</Badge>;
-      case 'rejected':
+      case "rejected":
         return <Badge variant="destructive">Rejected</Badge>;
-      case 'pending':
+      case "pending":
         return <Badge variant="outline">Pending</Badge>;
       default:
         return <Badge variant="outline">Unknown</Badge>;
@@ -127,19 +129,23 @@ const AdminProperties = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navigation />
-      
+
       <main className="flex-grow section-padding">
         <div className="container mx-auto py-8">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-nest-dark mb-2">Property Submissions</h1>
+            <h1 className="text-3xl font-bold text-nest-dark mb-2">
+              Property Submissions
+            </h1>
             <p className="text-gray-600">
               Review and manage property submissions from owners.
             </p>
           </div>
-          
+
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
             <Table>
-              <TableCaption>List of property submissions requiring review</TableCaption>
+              <TableCaption>
+                List of property submissions requiring review
+              </TableCaption>
               <TableHeader>
                 <TableRow>
                   <TableHead>ID</TableHead>
@@ -158,40 +164,45 @@ const AdminProperties = () => {
                     <TableCell>{submission.name}</TableCell>
                     <TableCell>{submission.owner.name}</TableCell>
                     <TableCell>{submission.location}</TableCell>
-                    <TableCell>{format(new Date(submission.submittedAt), 'MMM dd, yyyy')}</TableCell>
+                    <TableCell>
+                      {format(new Date(submission.submittedAt), "MMM dd, yyyy")}
+                    </TableCell>
                     <TableCell>{getStatusBadge(submission.status)}</TableCell>
                     <TableCell>
                       <div className="flex space-x-2">
-                        <Button 
-                          onClick={() => viewDetails(submission)} 
-                          variant="outline" 
+                        <Button
+                          onClick={() => viewDetails(submission)}
+                          variant="outline"
                           size="sm"
                         >
                           View Details
                         </Button>
-                        
-                        {submission.status === 'pending' && (
+
+                        {submission.status === "pending" && (
                           <>
-                            <Button 
+                            <Button
                               onClick={() => {
                                 setSelectedSubmission(submission);
-                                setReviewNote('');
-                                handleApprovalAction(submission._id, 'approved');
-                              }} 
-                              variant="outline" 
+                                setReviewNote("");
+                                handleApprovalAction(
+                                  submission._id,
+                                  "approved",
+                                );
+                              }}
+                              variant="outline"
                               size="sm"
                               className="text-green-600 border-green-600 hover:bg-green-50"
                             >
                               <Check className="h-4 w-4 mr-1" /> Approve
                             </Button>
-                            
-                            <Button 
+
+                            <Button
                               onClick={() => {
                                 setSelectedSubmission(submission);
-                                setReviewNote('');
+                                setReviewNote("");
                                 setIsDetailsOpen(true);
-                              }} 
-                              variant="outline" 
+                              }}
+                              variant="outline"
                               size="sm"
                               className="text-red-600 border-red-600 hover:bg-red-50"
                             >
@@ -203,10 +214,13 @@ const AdminProperties = () => {
                     </TableCell>
                   </TableRow>
                 ))}
-                
+
                 {submissions.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center py-8 text-gray-500">
+                    <TableCell
+                      colSpan={7}
+                      className="text-center py-8 text-gray-500"
+                    >
                       No property submissions found
                     </TableCell>
                   </TableRow>
@@ -216,7 +230,7 @@ const AdminProperties = () => {
           </div>
         </div>
       </main>
-      
+
       {/* Property Details Dialog */}
       {selectedSubmission && (
         <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
@@ -227,36 +241,44 @@ const AdminProperties = () => {
                 Review this property submission before making a decision.
               </DialogDescription>
             </DialogHeader>
-            
+
             <div className="mt-4 space-y-6">
               {/* Property Images */}
               <div>
                 <h3 className="text-lg font-medium mb-2">Property Images</h3>
-                {Array.isArray(selectedSubmission.images) && selectedSubmission.images.length > 0 && (
-                  <div className="grid grid-cols-2 gap-3">
-                    {selectedSubmission.images.map((image: any, index: number) => (
-                      <div key={index} className="overflow-hidden rounded-md">
-                        <AspectRatio ratio={16 / 9}>
-                          <img
-                            src={`${import.meta.env.VITE_API_BASE_URL}/${image}`}
-                            alt={`Property image ${index + 1}`}
-                            className="object-cover w-full h-full"
-                          />
-                        </AspectRatio>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                {Array.isArray(selectedSubmission.images) &&
+                  selectedSubmission.images.length > 0 && (
+                    <div className="grid grid-cols-2 gap-3">
+                      {selectedSubmission.images.map(
+                        (image: any, index: number) => (
+                          <div
+                            key={index}
+                            className="overflow-hidden rounded-md"
+                          >
+                            <AspectRatio ratio={16 / 9}>
+                              <img
+                                src={`${import.meta.env.VITE_API_BASE_URL}/${image}`}
+                                alt={`Property image ${index + 1}`}
+                                className="object-cover w-full h-full"
+                              />
+                            </AspectRatio>
+                          </div>
+                        ),
+                      )}
+                    </div>
+                  )}
               </div>
-              
+
               <Separator />
-              
+
               {/* Property Details */}
               <div>
                 <h3 className="text-lg font-medium mb-2">Basic Information</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label className="text-sm text-gray-500">Property Name</Label>
+                    <Label className="text-sm text-gray-500">
+                      Property Name
+                    </Label>
                     <p className="font-medium">{selectedSubmission.name}</p>
                   </div>
                   <div>
@@ -269,16 +291,16 @@ const AdminProperties = () => {
                   </div>
                 </div>
               </div>
-              
+
               <Separator />
-              
+
               {/* Owner Information */}
               <div>
                 <h3 className="text-lg font-medium mb-2">Owner Information</h3>
                 <div className="flex items-center">
                   {selectedSubmission.owner.avatar ? (
-                    <img 
-                      src={selectedSubmission.owner.avatar} 
+                    <img
+                      src={selectedSubmission.owner.avatar}
                       alt={selectedSubmission.owner.name}
                       className="w-10 h-10 rounded-full mr-3"
                     />
@@ -288,68 +310,88 @@ const AdminProperties = () => {
                     </div>
                   )}
                   <div>
-                    <p className="font-medium">{selectedSubmission.owner.name}</p>
-                    <p className="text-sm text-gray-500">Owner ID: {selectedSubmission.owner.id}</p>
+                    <p className="font-medium">
+                      {selectedSubmission.owner.name}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Owner ID: {selectedSubmission.owner.id}
+                    </p>
                   </div>
                 </div>
               </div>
-              
+
               <Separator />
-              
+
               {/* Property Specifications */}
               <div>
-                <h3 className="text-lg font-medium mb-2">Property Specifications</h3>
+                <h3 className="text-lg font-medium mb-2">
+                  Property Specifications
+                </h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <Card>
                     <CardContent className="p-4">
                       <p className="text-sm text-gray-500">Bedrooms</p>
-                      <p className="text-xl font-bold">{selectedSubmission.bedrooms}</p>
+                      <p className="text-xl font-bold">
+                        {selectedSubmission.bedrooms}
+                      </p>
                     </CardContent>
                   </Card>
                   <Card>
                     <CardContent className="p-4">
                       <p className="text-sm text-gray-500">Bathrooms</p>
-                      <p className="text-xl font-bold">{selectedSubmission.bathrooms}</p>
+                      <p className="text-xl font-bold">
+                        {selectedSubmission.bathrooms}
+                      </p>
                     </CardContent>
                   </Card>
                   <Card>
                     <CardContent className="p-4">
                       <p className="text-sm text-gray-500">Max Guests</p>
-                      <p className="text-xl font-bold">{selectedSubmission.maxGuests}</p>
+                      <p className="text-xl font-bold">
+                        {selectedSubmission.maxGuests}
+                      </p>
                     </CardContent>
                   </Card>
                   <Card>
                     <CardContent className="p-4">
                       <p className="text-sm text-gray-500">Price Per Day</p>
-                      <p className="text-xl font-bold">${selectedSubmission.pricePerDay}</p>
+                      <p className="text-xl font-bold">
+                        ${selectedSubmission.pricePerDay}
+                      </p>
                     </CardContent>
                   </Card>
                 </div>
               </div>
-              
+
               <Separator />
-              
+
               {/* Facilities */}
               <div>
                 <h3 className="text-lg font-medium mb-2">Facilities</h3>
                 <div className="flex flex-wrap gap-2">
                   {selectedSubmission.facilities.map((facility) => (
-                    <Badge key={facility.id} variant="outline" className="px-3 py-1">
+                    <Badge
+                      key={facility.id}
+                      variant="outline"
+                      className="px-3 py-1"
+                    >
                       {facility.name}
                     </Badge>
                   ))}
                 </div>
               </div>
-              
+
               <Separator />
-              
+
               {/* Documents */}
               {selectedSubmission.documents && (
                 <div>
-                  <h3 className="text-lg font-medium mb-2">Submitted Documents</h3>
+                  <h3 className="text-lg font-medium mb-2">
+                    Submitted Documents
+                  </h3>
                   <div className="flex flex-col space-y-2">
                     {selectedSubmission.documents.map((doc, index) => (
-                      <div 
+                      <div
                         key={index}
                         className="flex items-center p-3 border rounded-md"
                       >
@@ -359,13 +401,14 @@ const AdminProperties = () => {
                     ))}
                   </div>
                   <p className="text-sm text-gray-500 mt-2">
-                    In a real application, these documents would be downloadable and verifiable.
+                    In a real application, these documents would be downloadable
+                    and verifiable.
                   </p>
                 </div>
               )}
-              
+
               {/* Review Notes Section */}
-              {selectedSubmission.status === 'pending' && (
+              {selectedSubmission.status === "pending" && (
                 <div>
                   <Label htmlFor="review-notes">Review Notes (optional)</Label>
                   <Textarea
@@ -378,27 +421,28 @@ const AdminProperties = () => {
                 </div>
               )}
             </div>
-            
+
             <DialogFooter className="flex justify-end space-x-2 mt-6">
-              <Button 
-                variant="outline" 
-                onClick={() => setIsDetailsOpen(false)}
-              >
+              <Button variant="outline" onClick={() => setIsDetailsOpen(false)}>
                 Close
               </Button>
-              
-              {selectedSubmission.status === 'pending' && (
+
+              {selectedSubmission.status === "pending" && (
                 <>
-                  <Button 
+                  <Button
                     className="bg-green-600 hover:bg-green-700"
-                    onClick={() => handleApprovalAction(selectedSubmission._id, 'approved')}
+                    onClick={() =>
+                      handleApprovalAction(selectedSubmission._id, "approved")
+                    }
                   >
                     <Check className="h-4 w-4 mr-1" /> Approve
                   </Button>
-                  
-                  <Button 
+
+                  <Button
                     variant="destructive"
-                    onClick={() => handleApprovalAction(selectedSubmission._id, 'rejected')}
+                    onClick={() =>
+                      handleApprovalAction(selectedSubmission._id, "rejected")
+                    }
                   >
                     <X className="h-4 w-4 mr-1" /> Reject
                   </Button>
@@ -408,7 +452,7 @@ const AdminProperties = () => {
           </DialogContent>
         </Dialog>
       )}
-      
+
       <Footer />
     </div>
   );

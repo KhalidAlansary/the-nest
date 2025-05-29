@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useForm, useFieldArray } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { toast } from 'sonner';
-import { FilePlus, FileText, Plus, Trash2, Upload, Tag } from 'lucide-react';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useForm, useFieldArray } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { toast } from "sonner";
+import { FilePlus, FileText, Plus, Trash2, Upload, Tag } from "lucide-react";
 
-import { useAuth } from '@/hooks/useAuth';
-import Navigation from '@/components/Navigation';
-import Footer from '@/components/Footer';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Checkbox } from '@/components/ui/checkbox';
+import { useAuth } from "@/hooks/useAuth";
+import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
@@ -21,18 +21,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
+} from "@/components/ui/form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { Badge } from '@/components/ui/badge';
-import { PROPERTY_CATEGORIES, PropertyCategory } from '@/types/property';
+} from "@/components/ui/select";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import { PROPERTY_CATEGORIES, PropertyCategory } from "@/types/property";
 
 // Define the form schema
 const propertyFormSchema = z.object({
@@ -44,21 +44,24 @@ const propertyFormSchema = z.object({
   pricePerMonth: z.coerce.number().positive("Price must be positive"),
   bedrooms: z.coerce.number().int().positive("Must have at least 1 bedroom"),
   bathrooms: z.coerce.number().positive("Must have at least 1 bathroom"),
-  maxGuests: z.coerce.number().int().positive("Must accommodate at least 1 guest"),
+  maxGuests: z.coerce
+    .number()
+    .int()
+    .positive("Must accommodate at least 1 guest"),
   facilities: z.array(
     z.object({
       name: z.string().min(1, "Facility name is required"),
       icon: z.string().default("tv"),
-    })
+    }),
   ),
   categories: z.array(z.string()).min(1, "Select at least one category"),
-  images: z.any().refine(files => files?.length > 0, {
+  images: z.any().refine((files) => files?.length > 0, {
     message: "At least one image is required",
   }),
-  leaseDocument: z.any().refine(file => file?.length > 0, {
+  leaseDocument: z.any().refine((file) => file?.length > 0, {
     message: "Lease document is required",
   }),
-  idDocument: z.any().refine(file => file?.length > 0, {
+  idDocument: z.any().refine((file) => file?.length > 0, {
     message: "ID document is required",
   }),
 });
@@ -83,7 +86,7 @@ const PropertySubmit = () => {
   const [leaseFile, setLeaseFile] = useState<File | null>(null);
   const [idFile, setIdFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   // Initialize the form with default values
   const form = useForm<PropertyFormValues>({
     resolver: zodResolver(propertyFormSchema),
@@ -115,9 +118,9 @@ const PropertySubmit = () => {
   const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const newImages = Array.from(e.target.files);
-      setImages(prevImages => [...prevImages, ...newImages]);
-      form.setValue("images", [...images, ...newImages], { 
-        shouldValidate: true 
+      setImages((prevImages) => [...prevImages, ...newImages]);
+      form.setValue("images", [...images, ...newImages], {
+        shouldValidate: true,
       });
     }
   };
@@ -126,8 +129,8 @@ const PropertySubmit = () => {
   const handleLeaseChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setLeaseFile(e.target.files[0]);
-      form.setValue("leaseDocument", e.target.files, { 
-        shouldValidate: true 
+      form.setValue("leaseDocument", e.target.files, {
+        shouldValidate: true,
       });
     }
   };
@@ -136,8 +139,8 @@ const PropertySubmit = () => {
   const handleIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setIdFile(e.target.files[0]);
-      form.setValue("idDocument", e.target.files, { 
-        shouldValidate: true 
+      form.setValue("idDocument", e.target.files, {
+        shouldValidate: true,
       });
     }
   };
@@ -148,42 +151,45 @@ const PropertySubmit = () => {
     newImages.splice(index, 1);
     setImages(newImages);
     form.setValue("images", newImages.length ? newImages : undefined, {
-      shouldValidate: true
+      shouldValidate: true,
     });
   };
 
   // Handle form submission
   const onSubmit = async (data: PropertyFormValues) => {
     setIsSubmitting(true);
-    
+
     const formData = new FormData();
-    formData.append('name', data.name);
-    formData.append('description', data.description);
-    formData.append('location', data.location);
-    formData.append('pricePerDay', data.pricePerDay.toString());
-    formData.append('pricePerWeek', data.pricePerWeek.toString());
-    formData.append('pricePerMonth', data.pricePerMonth.toString());
-    formData.append('bedrooms', data.bedrooms.toString());
-    formData.append('bathrooms', data.bathrooms.toString());
-    formData.append('maxGuests', data.maxGuests.toString());
-    formData.append('categories', JSON.stringify(data.categories));
-    formData.append('facilities', JSON.stringify(data.facilities));
-    formData.append('owner', user?.id || ''); // assuming useAuth provides this
-  
+    formData.append("name", data.name);
+    formData.append("description", data.description);
+    formData.append("location", data.location);
+    formData.append("pricePerDay", data.pricePerDay.toString());
+    formData.append("pricePerWeek", data.pricePerWeek.toString());
+    formData.append("pricePerMonth", data.pricePerMonth.toString());
+    formData.append("bedrooms", data.bedrooms.toString());
+    formData.append("bathrooms", data.bathrooms.toString());
+    formData.append("maxGuests", data.maxGuests.toString());
+    formData.append("categories", JSON.stringify(data.categories));
+    formData.append("facilities", JSON.stringify(data.facilities));
+    formData.append("owner", user?.id || ""); // assuming useAuth provides this
+
     images.forEach((file) => {
-      formData.append('images', file);
+      formData.append("images", file);
     });
-    if (leaseFile) formData.append('leaseDocument', leaseFile);
-    if (idFile) formData.append('idDocument', idFile);
-  
+    if (leaseFile) formData.append("leaseDocument", leaseFile);
+    if (idFile) formData.append("idDocument", idFile);
+
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/properties`, {
-        method: 'POST',
-        body: formData,
-      });
-  
-      if (!res.ok) throw new Error('Submission failed');
-      
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/api/properties`,
+        {
+          method: "POST",
+          body: formData,
+        },
+      );
+
+      if (!res.ok) throw new Error("Submission failed");
+
       toast.success("Property submitted successfully");
       navigate("/properties");
     } catch (err) {
@@ -197,7 +203,7 @@ const PropertySubmit = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navigation />
-      
+
       <main className="flex-grow py-10 px-4 md:px-6">
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-8">
@@ -206,7 +212,7 @@ const PropertySubmit = () => {
               List your property on our platform and start earning!
             </p>
           </div>
-          
+
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <Card>
@@ -230,7 +236,7 @@ const PropertySubmit = () => {
                       </FormItem>
                     )}
                   />
-                  
+
                   <FormField
                     control={form.control}
                     name="description"
@@ -251,7 +257,7 @@ const PropertySubmit = () => {
                       </FormItem>
                     )}
                   />
-                  
+
                   <FormField
                     control={form.control}
                     name="location"
@@ -259,7 +265,7 @@ const PropertySubmit = () => {
                       <FormItem>
                         <FormLabel>Location</FormLabel>
                         <FormControl>
-                          <Select 
+                          <Select
                             onValueChange={field.onChange}
                             value={field.value}
                             defaultValue={field.value}
@@ -269,7 +275,10 @@ const PropertySubmit = () => {
                             </SelectTrigger>
                             <SelectContent>
                               {LOCATIONS.map((location) => (
-                                <SelectItem key={location.value} value={location.value}>
+                                <SelectItem
+                                  key={location.value}
+                                  value={location.value}
+                                >
                                   {location.label}
                                 </SelectItem>
                               ))}
@@ -297,7 +306,9 @@ const PropertySubmit = () => {
                     render={() => (
                       <FormItem>
                         <div className="mb-4">
-                          <FormLabel className="text-base">Property Categories</FormLabel>
+                          <FormLabel className="text-base">
+                            Property Categories
+                          </FormLabel>
                           <FormDescription>
                             Select all categories that apply to your property
                           </FormDescription>
@@ -316,15 +327,21 @@ const PropertySubmit = () => {
                                   >
                                     <FormControl>
                                       <Checkbox
-                                        checked={field.value?.includes(category.value)}
+                                        checked={field.value?.includes(
+                                          category.value,
+                                        )}
                                         onCheckedChange={(checked) => {
                                           return checked
-                                            ? field.onChange([...field.value, category.value])
+                                            ? field.onChange([
+                                                ...field.value,
+                                                category.value,
+                                              ])
                                             : field.onChange(
                                                 field.value?.filter(
-                                                  (value) => value !== category.value
-                                                )
-                                              )
+                                                  (value) =>
+                                                    value !== category.value,
+                                                ),
+                                              );
                                         }}
                                       />
                                     </FormControl>
@@ -332,7 +349,7 @@ const PropertySubmit = () => {
                                       {category.label}
                                     </FormLabel>
                                   </FormItem>
-                                )
+                                );
                               }}
                             />
                           ))}
@@ -363,7 +380,7 @@ const PropertySubmit = () => {
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField
                       control={form.control}
                       name="bathrooms"
@@ -371,13 +388,18 @@ const PropertySubmit = () => {
                         <FormItem>
                           <FormLabel>Bathrooms</FormLabel>
                           <FormControl>
-                            <Input type="number" min="0.5" step="0.5" {...field} />
+                            <Input
+                              type="number"
+                              min="0.5"
+                              step="0.5"
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField
                       control={form.control}
                       name="maxGuests"
@@ -408,13 +430,18 @@ const PropertySubmit = () => {
                         <FormItem>
                           <FormLabel>Price Per Day (L.E.)</FormLabel>
                           <FormControl>
-                            <Input type="number" min="0" step="0.01" {...field} />
+                            <Input
+                              type="number"
+                              min="0"
+                              step="0.01"
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField
                       control={form.control}
                       name="pricePerWeek"
@@ -422,13 +449,18 @@ const PropertySubmit = () => {
                         <FormItem>
                           <FormLabel>Price Per Week (L.E.)</FormLabel>
                           <FormControl>
-                            <Input type="number" min="0" step="0.01" {...field} />
+                            <Input
+                              type="number"
+                              min="0"
+                              step="0.01"
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField
                       control={form.control}
                       name="pricePerMonth"
@@ -436,7 +468,12 @@ const PropertySubmit = () => {
                         <FormItem>
                           <FormLabel>Price Per Month (L.E.)</FormLabel>
                           <FormControl>
-                            <Input type="number" min="0" step="0.01" {...field} />
+                            <Input
+                              type="number"
+                              min="0"
+                              step="0.01"
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -476,7 +513,7 @@ const PropertySubmit = () => {
                         </Button>
                       </div>
                     ))}
-                    
+
                     <Button
                       type="button"
                       variant="outline"
@@ -498,11 +535,19 @@ const PropertySubmit = () => {
                   <FormItem>
                     <FormLabel>Upload Images</FormLabel>
                     <FormControl>
-                      <div className="flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-6 cursor-pointer" onClick={() => document.getElementById('image-upload')?.click()}>
+                      <div
+                        className="flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-6 cursor-pointer"
+                        onClick={() =>
+                          document.getElementById("image-upload")?.click()
+                        }
+                      >
                         <div className="space-y-2 text-center">
                           <Upload className="mx-auto h-8 w-8 text-gray-400" />
                           <div className="text-sm text-gray-600">
-                            <span className="font-semibold text-primary">Click to upload</span> or drag and drop
+                            <span className="font-semibold text-primary">
+                              Click to upload
+                            </span>{" "}
+                            or drag and drop
                           </div>
                           <div className="text-xs text-gray-500">
                             PNG, JPG, WEBP up to 5MB each
@@ -522,7 +567,9 @@ const PropertySubmit = () => {
 
                     {images.length > 0 && (
                       <div className="mt-4">
-                        <h3 className="text-sm font-medium mb-2">Uploaded Images</h3>
+                        <h3 className="text-sm font-medium mb-2">
+                          Uploaded Images
+                        </h3>
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
                           {images.map((image, index) => (
                             <div key={index} className="relative group">
@@ -557,17 +604,23 @@ const PropertySubmit = () => {
                   <FormItem>
                     <FormLabel>
                       Lease Document
-                      <Badge variant="outline" className="ml-2">PDF Required</Badge>
+                      <Badge variant="outline" className="ml-2">
+                        PDF Required
+                      </Badge>
                     </FormLabel>
                     <FormControl>
                       <div className="flex items-center space-x-4">
-                        <div 
+                        <div
                           className="flex-1 flex items-center border rounded-md p-3 cursor-pointer hover:bg-gray-50"
-                          onClick={() => document.getElementById('lease-upload')?.click()}
+                          onClick={() =>
+                            document.getElementById("lease-upload")?.click()
+                          }
                         >
                           <FilePlus className="mr-2 h-5 w-5 text-gray-400" />
                           <span className="text-sm text-gray-600">
-                            {leaseFile ? leaseFile.name : "Upload lease document"}
+                            {leaseFile
+                              ? leaseFile.name
+                              : "Upload lease document"}
                           </span>
                           <Input
                             id="lease-upload"
@@ -586,7 +639,7 @@ const PropertySubmit = () => {
                             onClick={() => {
                               setLeaseFile(null);
                               form.setValue("leaseDocument", undefined, {
-                                shouldValidate: true
+                                shouldValidate: true,
                               });
                             }}
                           >
@@ -596,25 +649,32 @@ const PropertySubmit = () => {
                       </div>
                     </FormControl>
                     <FormDescription>
-                      Upload a copy of the lease agreement to verify your ownership of the property
+                      Upload a copy of the lease agreement to verify your
+                      ownership of the property
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
-                  
+
                   <FormItem>
                     <FormLabel>
                       ID Document
-                      <Badge variant="outline" className="ml-2">PDF Required</Badge>
+                      <Badge variant="outline" className="ml-2">
+                        PDF Required
+                      </Badge>
                     </FormLabel>
                     <FormControl>
                       <div className="flex items-center space-x-4">
-                        <div 
+                        <div
                           className="flex-1 flex items-center border rounded-md p-3 cursor-pointer hover:bg-gray-50"
-                          onClick={() => document.getElementById('id-upload')?.click()}
+                          onClick={() =>
+                            document.getElementById("id-upload")?.click()
+                          }
                         >
                           <FileText className="mr-2 h-5 w-5 text-gray-400" />
                           <span className="text-sm text-gray-600">
-                            {idFile ? idFile.name : "Upload identification document"}
+                            {idFile
+                              ? idFile.name
+                              : "Upload identification document"}
                           </span>
                           <Input
                             id="id-upload"
@@ -633,7 +693,7 @@ const PropertySubmit = () => {
                             onClick={() => {
                               setIdFile(null);
                               form.setValue("idDocument", undefined, {
-                                shouldValidate: true
+                                shouldValidate: true,
                               });
                             }}
                           >
@@ -666,7 +726,7 @@ const PropertySubmit = () => {
           </Form>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );

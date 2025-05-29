@@ -1,15 +1,18 @@
+import { Property } from "./property";
 
-import { Property } from './property';
-
-export type BookingStatus = 'pending' | 'confirmed' | 'completed' | 'cancelled';
-export type ServiceRequestType = 'cleaning' | 'maintenance' | 'supplies' | 'other';
+export type BookingStatus = "pending" | "confirmed" | "completed" | "cancelled";
+export type ServiceRequestType =
+  | "cleaning"
+  | "maintenance"
+  | "supplies"
+  | "other";
 
 export interface ServiceRequest {
   id: number;
   bookingId: number;
   type: ServiceRequestType;
   description: string;
-  status: 'pending' | 'in-progress' | 'completed' | 'cancelled';
+  status: "pending" | "in-progress" | "completed" | "cancelled";
   createdAt: Date;
 }
 
@@ -25,6 +28,6 @@ export interface Booking {
   totalAmount: number;
   status: BookingStatus;
   createdAt: Date;
-  paymentStatus: 'pending' | 'paid' | 'refunded';
+  paymentStatus: "pending" | "paid" | "refunded";
   serviceRequests?: ServiceRequest[];
 }

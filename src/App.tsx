@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -45,15 +44,71 @@ const App = () => {
               <Route path="/signup" element={<Signup />} />
               <Route path="/properties" element={<Properties />} />
               <Route path="/properties/:id" element={<PropertyDetails />} />
-              <Route path="/submit-property" element={<ProtectedRoute><PropertySubmit /></ProtectedRoute>} />
-              <Route path="/admin/properties" element={<AdminRoute><AdminProperties /></AdminRoute>} />
-              <Route path="/admin/furnish-requests" element={<AdminRoute><AdminFurnishRequests /></AdminRoute>} />
-              <Route path="/my-rentals" element={<ProtectedRoute><OwnerRentals /></ProtectedRoute>} />
-              <Route path="/my-bookings" element={<ProtectedRoute><MyBookings /></ProtectedRoute>} />
-              <Route path="/my-submissions" element={<ProtectedRoute><MySubmissions /></ProtectedRoute>} />
-              <Route path="/requests" element={<ProtectedRoute><Requests /></ProtectedRoute>} />
+              <Route
+                path="/submit-property"
+                element={
+                  <ProtectedRoute>
+                    <PropertySubmit />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/properties"
+                element={
+                  <AdminRoute>
+                    <AdminProperties />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path="/admin/furnish-requests"
+                element={
+                  <AdminRoute>
+                    <AdminFurnishRequests />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path="/my-rentals"
+                element={
+                  <ProtectedRoute>
+                    <OwnerRentals />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/my-bookings"
+                element={
+                  <ProtectedRoute>
+                    <MyBookings />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/my-submissions"
+                element={
+                  <ProtectedRoute>
+                    <MySubmissions />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/requests"
+                element={
+                  <ProtectedRoute>
+                    <Requests />
+                  </ProtectedRoute>
+                }
+              />
               <Route path="/furnish-your-home" element={<FurnishRequest />} />
-              <Route path="/payment" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
+              <Route
+                path="/payment"
+                element={
+                  <ProtectedRoute>
+                    <Payment />
+                  </ProtectedRoute>
+                }
+              />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

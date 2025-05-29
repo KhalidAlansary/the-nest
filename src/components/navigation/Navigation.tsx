@@ -1,10 +1,9 @@
-
-import React, { useState } from 'react';
-import { Menu, X } from 'lucide-react';
-import Logo from './Logo';
-import NavLinks from './NavLinks';
-import AuthButtons from './AuthButtons';
-import MobileMenu from './MobileMenu';
+import React, { useState } from "react";
+import { Menu, X } from "lucide-react";
+import Logo from "./Logo";
+import NavLinks from "./NavLinks";
+import AuthButtons from "./AuthButtons";
+import MobileMenu from "./MobileMenu";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,7 +27,10 @@ const Navigation = () => {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">
-            <button onClick={toggleMenu} className="text-nest-dark focus:outline-none">
+            <button
+              onClick={toggleMenu}
+              className="text-nest-dark focus:outline-none"
+            >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>

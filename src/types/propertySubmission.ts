@@ -1,7 +1,11 @@
+import {
+  PropertyFacility,
+  PropertyImage,
+  BookedDate,
+  PropertyDocument,
+} from "./property";
 
-import { PropertyFacility, PropertyImage, BookedDate, PropertyDocument } from './property';
-
-export type ApprovalStatus = 'pending' | 'approved' | 'rejected';
+export type ApprovalStatus = "pending" | "approved" | "rejected";
 
 export interface PropertySubmission {
   id: number;

@@ -1,32 +1,32 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { LogIn, User, LogOut } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useAuth } from '@/hooks/useAuth';
-import { toast } from 'sonner';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { LogIn, User, LogOut } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  Avatar,
-  AvatarFallback,
-} from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 interface AuthButtonsProps {
   toggleMenu?: () => void;
   isMobile?: boolean;
 }
 
-const AuthButtons: React.FC<AuthButtonsProps> = ({ toggleMenu, isMobile = false }) => {
+const AuthButtons: React.FC<AuthButtonsProps> = ({
+  toggleMenu,
+  isMobile = false,
+}) => {
   const { user, logout, isAuthenticated, isAdmin } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
-    toast.success('Successfully logged out');
-    navigate('/');
+    toast.success("Successfully logged out");
+    navigate("/");
     if (toggleMenu) toggleMenu();
   };
 
@@ -38,11 +38,15 @@ const AuthButtons: React.FC<AuthButtonsProps> = ({ toggleMenu, isMobile = false 
           <div className="flex items-center py-2 text-nest-dark">
             <User size={18} className="mr-2" />
             <span>{user?.username}</span>
-            {isAdmin && <span className="ml-2 text-xs bg-nest-primary/20 text-nest-primary px-2 py-0.5 rounded">Admin</span>}
+            {isAdmin && (
+              <span className="ml-2 text-xs bg-nest-primary/20 text-nest-primary px-2 py-0.5 rounded">
+                Admin
+              </span>
+            )}
           </div>
-          <Button 
+          <Button
             onClick={handleLogout}
-            variant="outline" 
+            variant="outline"
             className="w-full border-nest-primary text-nest-primary hover:bg-nest-primary/10"
           >
             <LogOut size={18} className="mr-2" /> Logout
@@ -50,7 +54,7 @@ const AuthButtons: React.FC<AuthButtonsProps> = ({ toggleMenu, isMobile = false 
         </div>
       );
     }
-    
+
     // Desktop layout with popover
     return (
       <Popover>
@@ -62,13 +66,17 @@ const AuthButtons: React.FC<AuthButtonsProps> = ({ toggleMenu, isMobile = false 
               </AvatarFallback>
             </Avatar>
             <span>{user?.username}</span>
-            {isAdmin && <span className="ml-1 text-xs bg-nest-primary/20 text-nest-primary px-2 py-0.5 rounded">Admin</span>}
+            {isAdmin && (
+              <span className="ml-1 text-xs bg-nest-primary/20 text-nest-primary px-2 py-0.5 rounded">
+                Admin
+              </span>
+            )}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-48 p-2">
-          <Button 
+          <Button
             onClick={handleLogout}
-            variant="outline" 
+            variant="outline"
             className="w-full border-nest-primary text-nest-primary hover:bg-nest-primary/10"
           >
             <LogOut size={18} className="mr-2" /> Logout
@@ -77,26 +85,28 @@ const AuthButtons: React.FC<AuthButtonsProps> = ({ toggleMenu, isMobile = false 
       </Popover>
     );
   }
-  
+
   // Not authenticated layout remains the same
   return (
-    <div className={`flex ${isMobile ? 'flex-col space-y-2' : 'items-center space-x-4'}`}>
-      <Button 
+    <div
+      className={`flex ${isMobile ? "flex-col space-y-2" : "items-center space-x-4"}`}
+    >
+      <Button
         onClick={() => {
-          navigate('/login');
+          navigate("/login");
           if (toggleMenu) toggleMenu();
-        }} 
-        className={`bg-nest-primary hover:bg-nest-primary/90 ${isMobile ? 'w-full mb-2' : ''}`}
+        }}
+        className={`bg-nest-primary hover:bg-nest-primary/90 ${isMobile ? "w-full mb-2" : ""}`}
       >
         <LogIn size={18} className="mr-2" /> Sign In
       </Button>
-      <Button 
+      <Button
         onClick={() => {
-          navigate('/signup');
+          navigate("/signup");
           if (toggleMenu) toggleMenu();
-        }} 
+        }}
         variant="outline"
-        className={`border-nest-primary text-nest-primary hover:bg-nest-primary/10 ${isMobile ? 'w-full' : ''}`}
+        className={`border-nest-primary text-nest-primary hover:bg-nest-primary/10 ${isMobile ? "w-full" : ""}`}
       >
         Sign Up
       </Button>
