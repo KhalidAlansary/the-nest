@@ -36,14 +36,64 @@ const NavLinks: React.FC<NavLinksProps> = ({
         Home
       </Link>
       
-      {/* Properties Link */}
-      <Link 
-        to="/properties" 
-        className={linkClassName}
-        onClick={toggleMenu}
-      >
-        Browse Properties
-      </Link>
+      {/* Properties Dropdown */}
+      {!isMobile ? (
+        <DropdownMenu>
+          <DropdownMenuTrigger className={`${linkClassName} flex items-center gap-1`}>
+            Properties <ChevronDown size={16} />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" className="w-56 bg-white">
+            <DropdownMenuItem asChild>
+              <Link
+                to="/properties"
+                className="w-full"
+                onClick={toggleMenu}
+              >
+                Browse Properties
+              </Link>
+            </DropdownMenuItem>
+            {isAuthenticated && (
+              <DropdownMenuItem asChild>
+                <Link
+                  to="/my-bookings"
+                  className="w-full"
+                  onClick={toggleMenu}
+                >
+                  My Bookings
+                </Link>
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ) : (
+        <div>
+          <div 
+            className={`${linkClassName} flex items-center cursor-pointer`}
+            role="button"
+            tabIndex={0}
+          >
+            Properties <ChevronDown size={16} className="ml-1" />
+          </div>
+          <div className="pl-4 mt-2 space-y-2">
+            <Link
+              to="/properties"
+              className={`${linkClassName} block`}
+              onClick={toggleMenu}
+            >
+              Browse Properties
+            </Link>
+            {isAuthenticated && (
+              <Link
+                to="/my-bookings"
+                className={`${linkClassName} block`}
+                onClick={toggleMenu}
+              >
+                My Bookings
+              </Link>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* My Properties Dropdown - Only show when authenticated */}
       {isAuthenticated && (
